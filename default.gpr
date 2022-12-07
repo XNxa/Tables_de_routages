@@ -1,18 +1,1 @@
-project Default is 
-    
-    for Main use ("exemple_adresse_ip.adb", "exemple_fichiers.adb", "exemple_alea.adb", "exemple_unbounded_string.adb", "lca_sujet.adb", "test_lca.adb", "test_th.adb", "th_sujet.adb");
-
-    package Builder is
-      for Default_Switches ("ada") use ("-s");
-    end Builder;
-
-    package Compiler is
-      for Default_Switches ("ada") use ("-gnatwa", "-gnata", "-g");
-    end Compiler;
-
-    package Binder is
-      for Default_Switches ("ada") use ("-E");
-    end Binder;
-
-
-end Default;
+project Default is end Default;

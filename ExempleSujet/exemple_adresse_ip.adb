@@ -11,6 +11,8 @@ procedure Exemple_Adresse_IP is
 	UN_OCTET: constant T_Adresse_IP := 2 ** 8;       -- 256
 	POIDS_FORT : constant T_Adresse_IP  := 2 ** 31;	 -- 10000000.00000000.00000000.00000000
 
+	A : Integer := 3;
+
 	IP1 : T_Adresse_IP;
 	IP2 : T_Adresse_IP;
 	M1 : T_Adresse_IP;
@@ -123,7 +125,6 @@ begin
 	Put ("IP1 décalé à droite (1 bit)  = "); Put (Integer (IP1 / 2),      Base => 2, Width => 15);  New_Line;
 	Put ("IP1 décalé à gauche (3 bit)  = "); Put (Integer (IP1 * 2 ** 3), Base => 2, Width => 15);  New_Line;
 	Put ("IP1 décalé à droite (3 bit)  = "); Put (Integer (IP1 / 2 ** 3), Base => 2, Width => 15);  New_Line;
-
 
 
 end Exemple_Adresse_IP;
