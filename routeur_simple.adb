@@ -6,8 +6,9 @@ with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
 with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Adresse_IP; use Adresse_IP;
+with Table_Routage; use Table_Routage;
 
-procedure Routeur is
+procedure Routeur_simple is
     
     Option_Erreur : exception; -- Exception levée quand l'utilisateur utilise mal les options
 
@@ -48,6 +49,12 @@ procedure Routeur is
     Destination, Masque : T_adresse_ip;
     Octet1, Octet2, Octet3, Octet4 : Integer;
     Poubelle : Character; -- Varible utilisée pour consommer des caratères inutiles
+    Table_Routage : T_Table_Routage;
+
+    -- Variables pour l'ecriture des resultats
+    Paquets : File_Type;
+    Paquet : T_adresse_ip;
+    Resultat : File_Type;
 
 begin
 
@@ -119,7 +126,10 @@ begin
     -- Ouvrir f_table en lecture
     Open(Table, In_File, To_String(f_table));
 
+    Initialiser (Table_Routage);
+
     -- Parcourir les lignes du fichier
+    begin
     while not End_Of_File(Table) loop
 
         -- Séparer la ligne courante en Destination | Masque | Interface
@@ -150,30 +160,53 @@ begin
         InterfaceLue := Get_line(Table);
         Trim(InterfaceLue, Both);
 
-        
-        Put_Line(To_UString_Base10(Destination));
-        Put_Line(To_UString_Base10(Masque));
-        Put_Line(InterfaceLue);
-        Put_Line("-----------------");
-
-        -- TODO : Enregistrer avec le module Table de routage
+        -- Enregistrer la ligne courante dans la table de routage
+        Enregistrer(Table_Routage, Destination, Masque, InterfaceLue);
 
     end loop;
+    exception
+        when End_Error =>
+            Put("Attention, Blancs en surplus à la fin du fichier : " & f_table);
+    end;
+    Close(Table);
 
-
+    Open(Paquets, In_File, To_String(f_paquet));
+    Create(Resultat, Out_File, To_String(f_resultat));
+    begin
+    while not End_Of_File(Paquets) loop
     -- Associer chaque paquet à une InterfaceLue
 
-        -- TODO : 
-        -- - Ouvrir Paquet en lecture
-        -- - Boucler sur les lignes de paquet
-        -- - Traitement spécial si pas adresse mais mot clé de commande utilisateur
-        -- - Traitement normal pour les adresses : Cache, routeur ...
-        -- - Enregistrer dans le fichier resultat
-        
+        -- Lecture d'un Paquet
+        Get(Paquets, Octet1);
+        Get(Paquets, Poubelle); -- Consommer le caractère '.'
+        Get(Paquets, Octet2);
+        Get(Paquets, Poubelle);
+        Get(Paquets, Octet3);
+        Get(Paquets, Poubelle);
+        Get(Paquets, Octet4);
+        Initialiser(Paquet, Octet1, Octet2, Octet3, Octet4);
 
+        -- Enregistrer dans le fichier resultat
+        Put(Resultat, To_UString_Base10(Paquet));
+        Put(Resultat, " ");
+        Put(Resultat, Chercher_Route(Table_Routage, Paquet));
+        New_Line(Resultat);
+
+        -- TODO :
+        -- - Traitement spécial si pas adresse mais mot clé de commande utilisateur
+
+    end loop;
+    exception
+        when End_Error =>
+            Put("Attention, Blancs en surplus à la fin du fichier : " & f_paquet);
+    end;
+    Close(Paquets);
+    Close(Resultat);
+
+    -- Vider la table de routage à la fin de son utilisation    
+    Vider(Table_Routage);
 
     exception
         when Option_Erreur =>
             Afficher_Utilisation;
-
-end Routeur;
+end Routeur_simple;

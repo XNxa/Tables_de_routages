@@ -20,6 +20,9 @@ package Adresse_IP is
     function Est_Compatible (Adresse : in T_adresse_ip; Masque : in T_adresse_ip;
              Destination : in T_adresse_ip) return Boolean;
 
+    function ">=" (Left : T_adresse_ip; Right : T_adresse_ip) return Boolean;
+
+
 private
     type T_adresse_ip is mod 2 ** 32;
     

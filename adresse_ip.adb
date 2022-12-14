@@ -1,4 +1,5 @@
 with Ada.Strings.Fixed; Use Ada.Strings.Fixed;
+with Ada.Long_Integer_Text_IO; use Ada.Long_Integer_Text_IO;
 
 package body Adresse_IP is
     
@@ -52,5 +53,10 @@ package body Adresse_IP is
     begin
         return ((Adresse and Masque) = Destination);
     end Est_Compatible;
+
+    function ">=" (Left : T_adresse_ip; Right : T_adresse_ip) return Boolean is
+    begin        
+        return Long_Integer(Left)>=Long_Integer(Right);
+    end ">=";
 
 end Adresse_IP;
