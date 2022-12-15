@@ -99,6 +99,35 @@ procedure Routeur_simple is
         end loop;
     end Initialiser_Options;
 
+    procedure Importer_Table (Table_Routage : in out T_Table_Routage ; f_table : in Unbounded_String) is
+        FD_Table : File_Type;
+        InterfaceLue : Unbounded_String;
+        Destination, Masque : T_adresse_ip; 
+    begin
+        Open(FD_Table, In_File, To_String(f_table));
+        -- Ouvrir f_table en lecture
+        Initialiser (Table_Routage);
+        -- Parcourir les lignes du fichier
+        begin
+        while not End_Of_File(FD_Table) loop
+        -- Séparer la ligne courante en Destination | Masque | Interface
+
+            Lire_Adresse (Destination, FD_Table); -- Destination
+            Lire_Adresse (Masque, FD_Table); -- Masque
+            InterfaceLue := Get_line(FD_Table); -- Interface
+            Trim(InterfaceLue, Both); -- Supprimer les espaces blancs
+
+            -- Enregistrer la ligne courante dans la table de routage
+            Enregistrer(Table_Routage, Destination, Masque, InterfaceLue);
+
+        end loop;
+        exception
+            when End_Error =>
+                Put("Attention, Blancs en surplus à la fin du fichier : " & f_table);
+        end;
+        Close(FD_Table);
+    end Importer_Table;
+
     -- Valeur par défault des options
     taille_cache : Integer := 10;
     politique : Unbounded_String := +"FIFO";
@@ -108,9 +137,6 @@ procedure Routeur_simple is
     f_resultat : Unbounded_String := +"resultats.txt";
 
     -- Variables pour l'ouverture du fichier f_table
-    Table : File_Type;
-    InterfaceLue : Unbounded_String;
-    Destination, Masque : T_adresse_ip;
     Table_Routage : T_Table_Routage;
 
     -- Variables pour l'ecriture des resultats
@@ -123,38 +149,14 @@ begin
     Initialiser_Options (taille_cache, politique, afficher_stat, f_table, f_paquet, f_resultat);
     
     -- Importer la table de routage depuis le fichier
-   
-    -- Ouvrir f_table en lecture
-    Open(Table, In_File, To_String(f_table));
-
-    Initialiser (Table_Routage);
-
-    -- Parcourir les lignes du fichier
-    begin
-    while not End_Of_File(Table) loop
-    -- Séparer la ligne courante en Destination | Masque | Interface
-
-        Lire_Adresse (Destination, Table); -- Destination
-        Lire_Adresse (Masque, Table); -- Masque
-        InterfaceLue := Get_line(Table); -- Interface
-        Trim(InterfaceLue, Both); -- Supprimer les espaces blancs
-
-        -- Enregistrer la ligne courante dans la table de routage
-        Enregistrer(Table_Routage, Destination, Masque, InterfaceLue);
-
-    end loop;
-    exception
-        when End_Error =>
-            Put("Attention, Blancs en surplus à la fin du fichier : " & f_table);
-    end;
-    Close(Table);
-
+    Importer_Table (Table_Routage, f_table);
+    
+    -- Associer chaque paquet à une InterfaceLue
     Open(Paquets, In_File, To_String(f_paquet));
     Create(Resultat, Out_File, To_String(f_resultat));
     begin
     while not End_Of_File(Paquets) loop
-    -- Associer chaque paquet à une InterfaceLue
-
+    
         -- Lecture d'un Paquet
         Lire_Adresse (Paquet, Paquets);
 
@@ -165,7 +167,7 @@ begin
         New_Line(Resultat);
 
         -- TODO :
-        -- - Traitement spécial si pas adresse mais mot clé de commande utilisateur
+        -- Traitement spécial si pas adresse mais mot clé de commande utilisateur
 
     end loop;
     exception
