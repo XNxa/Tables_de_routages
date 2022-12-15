@@ -32,6 +32,73 @@ procedure Routeur_simple is
 	function "+" (Item : in String) return Unbounded_String
 		renames To_Unbounded_String;
 
+    procedure Initialiser_Options (taille_cache : out Integer; politique : out Unbounded_String ; afficher_stat : out Boolean ; 
+        f_table : out Unbounded_String ; f_paquet : out Unbounded_String ; f_resultat : out Unbounded_String ) is
+
+        i : Integer := 1;
+    begin
+        while i <= Argument_Count loop
+            
+            if Argument(i) = "-c" or Argument(i) = "-P" or Argument(i) = "-t" or Argument(i) = "-p" or Argument(i) = "-r" then
+                
+                if i+1 <= Argument_Count then
+
+                    if Argument(i) = "-c" then
+                        begin
+                            taille_cache := Integer'Value(Argument(i+1));
+                            exception
+                                -- Erreur levée si l'argument après -c n'est pas un entier
+                                when CONSTRAINT_ERROR => 
+                                    Put_Line("L'option -c prend un entier en Argument");
+                                    raise Option_Erreur;
+                        end;
+
+                    elsif Argument(i) = "-P" then
+                        politique := +Argument(i+1);
+                        if not (politique = +"FIFO" or politique = +"LFU" or politique = +"LRU") then
+                            Put_Line("Politique choisie inconnue");
+                            raise Option_Erreur;
+                        end if;
+
+                    elsif Argument(i) = "-t" then
+                        f_table := +Argument(i+1);
+                        if Tail(f_table, 4) /= ".txt" then 
+                            Put_Line("Nom de fichier de table incorrect");
+                            raise Option_Erreur;
+                        end if;
+                    
+                    elsif Argument(i) = "-p" then
+                        f_paquet := +Argument(i+1);
+                        if Tail(f_paquet, 4) /= ".txt" then 
+                            Put_Line("Nom de fichier de paquet incorrect");
+                            raise Option_Erreur;
+                        end if;
+                    
+                    elsif Argument(i) = "-r" then
+                        f_resultat := +Argument(i+1); 
+                        if Tail(f_resultat, 4) /= ".txt" then 
+                            Put_Line("Nom de fichier de resultat incorrect");
+                            raise Option_Erreur;
+                        end if;
+                    end if;
+
+                    i := i + 2;
+
+                else 
+                    Put_Line("Mauvais nombre d'argument");
+                    raise Option_Erreur;
+                end if;
+            
+            elsif Argument(i) = "-s" or Argument(i) = "-S" then
+                afficher_stat := (Argument(i) = "-s");
+                i := i + 1;
+            else
+                Put_Line("Option non reconnue");
+                raise Option_Erreur;
+            end if;
+        end loop;
+    end Initialiser_Options;
+
     -- Valeur par défault des options
     taille_cache : Integer := 10;
     politique : Unbounded_String := +"FIFO";
@@ -39,16 +106,11 @@ procedure Routeur_simple is
     f_table : Unbounded_String :=  +"table.txt";
     f_paquet : Unbounded_String := +"paquet.txt";
     f_resultat : Unbounded_String := +"resultats.txt";
-    
-    -- Variable de la boucle while d'initialisation des options 
-    i : Integer := 1; 
 
     -- Variables pour l'ouverture du fichier f_table
     Table : File_Type;
     InterfaceLue : Unbounded_String;
     Destination, Masque : T_adresse_ip;
-    Octet1, Octet2, Octet3, Octet4 : Integer;
-    Poubelle : Character; -- Varible utilisée pour consommer des caratères inutiles
     Table_Routage : T_Table_Routage;
 
     -- Variables pour l'ecriture des resultats
@@ -57,72 +119,11 @@ procedure Routeur_simple is
     Resultat : File_Type;
 
 begin
-
     -- Initialiser les options à partir des arguments en ligne de commande
-    while i <= Argument_Count loop
-        
-        if Argument(i) = "-c" or Argument(i) = "-P" or Argument(i) = "-t" or Argument(i) = "-p" or Argument(i) = "-r" then
-            
-            if i+1 <= Argument_Count then
-
-                if Argument(i) = "-c" then
-                    begin
-                        taille_cache := Integer'Value(Argument(i+1));
-                        exception
-                            -- Erreur levée si l'argument après -c n'est pas un entier
-                            when CONSTRAINT_ERROR => 
-                                Put_Line("L'option -c prend un entier en Argument");
-                                raise Option_Erreur;
-                    end;
-
-                elsif Argument(i) = "-P" then
-                    politique := +Argument(i+1);
-                    if not (politique = +"FIFO" or politique = +"LFU" or politique = +"LRU") then
-                        Put_Line("Politique choisie inconnue");
-                        raise Option_Erreur;
-                    end if;
-
-                elsif Argument(i) = "-t" then
-                    f_table := +Argument(i+1);
-                    if Tail(f_table, 4) /= ".txt" then 
-                        Put_Line("Nom de fichier de table incorrect");
-                        raise Option_Erreur;
-                    end if;
-                
-                elsif Argument(i) = "-p" then
-                    f_paquet := +Argument(i+1);
-                    if Tail(f_paquet, 4) /= ".txt" then 
-                        Put_Line("Nom de fichier de paquet incorrect");
-                        raise Option_Erreur;
-                    end if;
-                
-                elsif Argument(i) = "-r" then
-                    f_resultat := +Argument(i+1); 
-                    if Tail(f_resultat, 4) /= ".txt" then 
-                        Put_Line("Nom de fichier de resultat incorrect");
-                        raise Option_Erreur;
-                    end if;
-                end if;
-
-                i := i + 2;
-
-            else 
-                Put_Line("Mauvais nombre d'argument");
-                raise Option_Erreur;
-            end if;
-        
-        elsif Argument(i) = "-s" or Argument(i) = "-S" then
-            afficher_stat := (Argument(i) = "-s");
-            i := i + 1;
-        else
-            Put_Line("Option non reconnue");
-            raise Option_Erreur;
-        end if;
-    end loop;
-
+    Initialiser_Options (taille_cache, politique, afficher_stat, f_table, f_paquet, f_resultat);
     
     -- Importer la table de routage depuis le fichier
-    
+   
     -- Ouvrir f_table en lecture
     Open(Table, In_File, To_String(f_table));
 
@@ -131,34 +132,12 @@ begin
     -- Parcourir les lignes du fichier
     begin
     while not End_Of_File(Table) loop
+    -- Séparer la ligne courante en Destination | Masque | Interface
 
-        -- Séparer la ligne courante en Destination | Masque | Interface
-
-        -- Destination
-        Get(Table, Octet1);
-        Get(Table, Poubelle); -- Consommer le caractère '.'
-        Get(Table, Octet2);
-        Get(Table, Poubelle);
-        Get(Table, Octet3);
-        Get(Table, Poubelle);
-        Get(Table, Octet4);
-        Get(Table, Poubelle); 
-        Initialiser(Destination, Octet1, Octet2, Octet3, Octet4);
-
-        -- Masque
-        Get(Table, Octet1);
-        Get(Table, Poubelle);
-        Get(Table, Octet2);
-        Get(Table, Poubelle);
-        Get(Table, Octet3);
-        Get(Table, Poubelle);
-        Get(Table, Octet4);
-        Get(Table, Poubelle);
-        Initialiser(Masque, Octet1, Octet2, Octet3, Octet4);
-        
-        -- Interface
-        InterfaceLue := Get_line(Table);
-        Trim(InterfaceLue, Both);
+        Lire_Adresse (Destination, Table); -- Destination
+        Lire_Adresse (Masque, Table); -- Masque
+        InterfaceLue := Get_line(Table); -- Interface
+        Trim(InterfaceLue, Both); -- Supprimer les espaces blancs
 
         -- Enregistrer la ligne courante dans la table de routage
         Enregistrer(Table_Routage, Destination, Masque, InterfaceLue);
@@ -177,14 +156,7 @@ begin
     -- Associer chaque paquet à une InterfaceLue
 
         -- Lecture d'un Paquet
-        Get(Paquets, Octet1);
-        Get(Paquets, Poubelle); -- Consommer le caractère '.'
-        Get(Paquets, Octet2);
-        Get(Paquets, Poubelle);
-        Get(Paquets, Octet3);
-        Get(Paquets, Poubelle);
-        Get(Paquets, Octet4);
-        Initialiser(Paquet, Octet1, Octet2, Octet3, Octet4);
+        Lire_Adresse (Paquet, Paquets);
 
         -- Enregistrer dans le fichier resultat
         Put(Resultat, To_UString_Base10(Paquet));

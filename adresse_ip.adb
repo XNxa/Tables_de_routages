@@ -21,7 +21,22 @@ package body Adresse_IP is
         IpTemp := IpTemp * UN_OCTET + O4;
 
         Adresse := IpTemp;
-    end Initialiser; 
+    end Initialiser;
+
+    procedure Lire_Adresse (Adresse : out T_adresse_ip ; Fichier : in out File_Type) is
+        Octet1, Octet2, Octet3, Octet4 : Integer;
+        Poubelle : Character;
+    begin
+        Get(Fichier, Octet1);
+        Get(Fichier, Poubelle); -- Consommer le caractère '.'
+        Get(Fichier, Octet2);
+        Get(Fichier, Poubelle);
+        Get(Fichier, Octet3);
+        Get(Fichier, Poubelle);
+        Get(Fichier, Octet4);
+        Get(Fichier, Poubelle); 
+        Initialiser(Adresse, Octet1, Octet2, Octet3, Octet4);
+    end Lire_Adresse;
 
     function To_UString_Base10 (Adresse : in T_adresse_ip) return Unbounded_String is
         IpTemp1 : T_Adresse_IP;

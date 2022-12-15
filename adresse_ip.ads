@@ -1,5 +1,7 @@
 with Ada.Strings.Unbounded; Use Ada.Strings.Unbounded;
-with Ada.Strings; Use Ada.Strings;
+with Ada.Strings; use Ada.Strings;
+with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
 
 package Adresse_IP is
 
@@ -12,6 +14,9 @@ package Adresse_IP is
         Pre => 0 <= Octet1 and Octet1 <= 255 and 0 <= Octet2 and Octet2 <= 255 
         and 0 <= Octet3 and Octet3 <= 255 and 0 <= Octet4 and Octet4 <= 255;
 
+    -- Permet de lire une adresse dans un fichier et de l'initialiser
+    procedure Lire_Adresse (Adresse : out T_adresse_ip ; Fichier : in out File_Type);
+
     -- Permet d'obtenir une Unbounded_String correspondant à une adresse
     function To_UString_Base10 (Adresse : in T_adresse_ip) return Unbounded_String;
 
@@ -20,6 +25,7 @@ package Adresse_IP is
     function Est_Compatible (Adresse : in T_adresse_ip; Masque : in T_adresse_ip;
              Destination : in T_adresse_ip) return Boolean;
 
+    -- Surcharge de l'operateur pour le type T_adresse_ip
     function ">=" (Left : T_adresse_ip; Right : T_adresse_ip) return Boolean;
 
 
