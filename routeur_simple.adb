@@ -6,7 +6,7 @@ with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
 with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Adresse_IP; use Adresse_IP;
-with Table_Routage; use Table_Routage;
+with Routage; use Routage;
 
 procedure Routeur_simple is
     

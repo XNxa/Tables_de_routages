@@ -1,6 +1,6 @@
 with Ada.Unchecked_Deallocation;
 
-package body Table_Routage is
+package body Routage is
 
     procedure Free is
         new Ada.Unchecked_Deallocation(Object => T_Cellule, Name => T_Table_Routage);
@@ -23,7 +23,7 @@ package body Table_Routage is
     begin
         Initialiser(Masque, 0, 0, 0, 0);
         while Table_Aux /= null loop
-            if Est_Compatible(PaquetARouter, Table_Aux.all.Masque, Table_Aux.all.Destination) and Table_Aux.all.Masque >= Masque then
+            if Est_Compatible(PaquetARouter, Table_Aux.all.Masque, Table_Aux.all.Destination) and Sup_Masque(Table_Aux.all.Masque, Masque) then
                 Masque := Table_aux.all.Masque;
                 InterfaceARetourner := Table_aux.all.InterfaceRoute;
             end if;
@@ -42,4 +42,4 @@ package body Table_Routage is
         end loop;
     end Vider;
 
-end Table_Routage;
+end Routage;

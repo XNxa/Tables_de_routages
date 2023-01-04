@@ -25,8 +25,8 @@ package Adresse_IP is
     function Est_Compatible (Adresse : in T_adresse_ip; Masque : in T_adresse_ip;
              Destination : in T_adresse_ip) return Boolean;
 
-    -- Surcharge de l'operateur pour le type T_adresse_ip
-    function ">=" (Left : T_adresse_ip; Right : T_adresse_ip) return Boolean;
+    -- Permet de avoir si le membre de gauche est superieur ou égal au membre de droite
+    function Sup_Masque (Left : T_adresse_ip; Right : T_adresse_ip) return Boolean;
 
 
 private

@@ -1,7 +1,7 @@
 with Adresse_IP; use Adresse_IP;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
-package Table_Routage is
+package Routage is
 
 	type T_Table_Routage is limited private;
 
@@ -33,4 +33,4 @@ private
 		Suivant: T_Table_Routage;
 	end record;
 
-end Table_Routage;
+end Routage;

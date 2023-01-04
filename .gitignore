@@ -1,0 +1,4 @@
+#Ignorer les fichiers de compilation ada
+*.o
+*.ali
+routeur_simple
