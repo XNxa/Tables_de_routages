@@ -21,4 +21,3 @@ Les fichiers paquet et tables fournis permettent de tester le programme sans ajo
 
 Dans le fichier paquet, il faut ajouter un caractère blanc à la fin de chaque adresse ip.
 Dans le fichier table, il ne faut pas avoir plus de 2 lignes vides à la fin du fichier.
-
