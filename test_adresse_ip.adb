@@ -49,11 +49,11 @@ procedure Test_Adresse_IP is
 
     procedure Test_de_la_fonction_Lire_Adresse is
     begin
-        Open(Fichier, In_File, "adresse.txt");
+        Open(Fichier, In_File, "test_adresse.txt");
         Lire_Adresse(Adresse2, Fichier);
         Adresse_String := To_UString_Base10(Adresse2);
         Put_Line("Test de la fonction Lire_Adresse : " & Adresse_String);
-        --pragma Assert (Adresse_String = A FAIRE);
+        pragma Assert (Adresse_String = "192.168.0.1");
 
         Lire_Adresse(Adresse1, Fichier);
         Adresse_String := To_UString_Base10(Adresse1);
@@ -61,12 +61,13 @@ procedure Test_Adresse_IP is
         Close(Fichier);
 
         -- Créer un fichier vide "adresse.txt"
-        Open(Fichier, In_File, "adresse_vide.txt");
+        Open(Fichier, In_File, "test_adresse_vide.txt");
         Lire_Adresse(Adresse1, Fichier);
         Adresse_String := To_UString_Base10(Adresse1);
         Put_Line("Test avec un fichier vide : " & Adresse_String);
         Close(Fichier);
 
+         Put_Line("Fonction Lire_Adresse OK");
     end Test_de_la_fonction_Lire_Adresse;
 
 begin
