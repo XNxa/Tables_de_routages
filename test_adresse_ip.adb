@@ -163,7 +163,7 @@ begin
     Test_de_la_fonction_Initialiser;
     new_Line;
     --Put_Line("Test de la fonction Lire_Adresse :");
-   -- Test_de_la_fonction_Lire_Adresse;
+    --Test_de_la_fonction_Lire_Adresse;
     new_Line;
     Put_Line("Test de la fonction Est_Compatible :");
     Test_Est_Compatible;
