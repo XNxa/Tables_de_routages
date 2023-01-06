@@ -26,6 +26,7 @@ package Liste_Chainee is
     procedure Vider (Liste : in out T_Liste);
 
 private
+
     type T_Cellule;
 
     type T_Liste is access T_Cellule;
