@@ -1,4 +1,5 @@
 with Ada.Strings.Fixed; Use Ada.Strings.Fixed;
+with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
 
 package body Adresse_IP is
     
