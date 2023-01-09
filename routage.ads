@@ -1,5 +1,6 @@
 with Adresse_IP; use Adresse_IP;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Outils; use Outils;
 
 package Routage is
 
@@ -14,7 +15,10 @@ package Routage is
 
 	-- Chercher si une adresse correspond à une route dans la table de routage
 	-- Renvoie l'interface de la route qui correspond le mieux
-    function Chercher_Route (Table_Routage : in T_Table_Routage ; PaquetARouter : in T_adresse_ip) return Unbounded_String;
+    function Chercher_Route (Table_Routage : in T_Table_Routage ; PaquetARouter : in T_adresse_ip) return T_Route;
+
+	-- Afficher la table de routage
+	procedure Afficher_Table_Routage (Table_Routage : in T_Table_Routage);
 
 	-- Permet de vider la liste Chainée
     procedure Vider (Table_Routage : in out T_Table_Routage);

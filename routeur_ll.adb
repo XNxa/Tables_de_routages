@@ -2,12 +2,10 @@ with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Strings; use Ada.Strings;
 with Ada.Text_IO.Unbounded_IO;  use Ada.Text_IO.Unbounded_IO;
-with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
-with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Adresse_IP; use Adresse_IP;
 with Routage; use Routage;
-with Cache_L; use Cache_L;
+with Cache_L;
 with Outils; use Outils;
 
 procedure Routeur_LL is
@@ -127,6 +125,33 @@ procedure Routeur_LL is
         Close(FD_Table);
     end Importer_Table;
 
+    procedure Enregister_Resultat (Fichier : File_Type ; Route : T_Route) is
+    begin
+        Put(Fichier, To_UString_Base10(Route.Adresse));
+        Put(Fichier, " ");
+        Put(Fichier, Route.Port);
+        New_Line(Fichier);
+    end Enregister_Resultat;
+
+    procedure Lire_Commande (Fichier : File_Type ; Commande : out T_Commandes) is
+        Lecture : Unbounded_String;
+    begin
+        Get_Line(Fichier, Lecture);
+
+        if Lecture = "table" then
+            Commande := Table;
+
+        elsif Lecture = "cache" then
+            Commande := Cache;
+
+        elsif Lecture = "stat" then
+            Commande := Stat; 
+        
+        elsif Lecture = "fin" then
+            Commande := Fin;
+        end if;
+    end Lire_Commande;
+
     -- Valeur par défault des options
     taille_cache : Integer := 10;
     politique : Unbounded_String := +"FIFO";
@@ -143,6 +168,14 @@ procedure Routeur_LL is
     Paquet : T_adresse_ip;
     FD_Resultat : File_Type;
 
+    package Cache_Liste is new Cache_L (taille_cache);
+    use Cache_Liste;
+
+    Cache : T_Cache;
+    Route_Cache : T_Route;
+
+    Commande : T_Commandes;
+
 begin
     -- Initialiser les options à partir des arguments en ligne de commande
     Initialiser_Options (taille_cache, politique, afficher_stat, f_table, f_paquet, f_resultat);
@@ -153,18 +186,28 @@ begin
     -- Associer chaque paquet à une InterfaceLue
     Open(FD_Paquet, In_File, To_String(f_paquet));
     Create(FD_Resultat, Out_File, To_String(f_resultat));
+
+    -- Initialiser le cache
+    Initialiser (Cache);
+
     begin
     while not End_Of_File(FD_Paquet) loop
     
         -- Lecture d'un Paquet
         Lire_Adresse (Paquet, FD_Paquet);
 
-        -- Enregistrer dans le fichier resultat
-        Put(FD_Resultat, To_UString_Base10(Paquet));
-        Put(FD_Resultat, " ");
-        Put(FD_Resultat, Chercher_Route(Table_Routage, Paquet));
-        New_Line(FD_Resultat);
-        
+        Route_cache := Chercher (Cache, Paquet);
+
+        if Route_Cache.Port /= "null" then 
+            Mettre_a_jour (Cache, Route_Cache, To_string(politique));
+        else 
+            Route_cache := Chercher_Route (Table_Routage, Paquet);
+            Enregistrer (Cache, Route_Cache, To_String(politique));
+        end if;
+
+        Enregister_Resultat (FD_Resultat, Route_Cache);
+
+
         -- TODO :
         -- Traitement spécial si pas adresse mais mot clé de commande utilisateur
 
@@ -172,6 +215,18 @@ begin
     exception
         when End_Error =>
             Put("Attention, Blancs en surplus à la fin du fichier : " & f_paquet);
+        when Data_Error =>
+            Lire_Commande (FD_Paquet, Commande);
+            case Commande is
+                when Table =>
+                    Afficher_Table_Routage (Table_Routage);
+                when Cache =>
+                    Afficher_Cache (Cache);
+                when Stat =>
+                    -- Afficher_Stat (Cache);
+                when Fin =>
+                    Put("Fin du programme");
+            end case;
     end;
     Close(FD_Paquet);
     Close(FD_Resultat);
