@@ -131,6 +131,22 @@ package body Cache_L is
         end if;
     end Enregistrer;
 
+    procedure Afficher_Cache (Cache : in T_Cache) is
+        Cache_aux : T_Cache := Cache;
+    begin
+        Put_Line("Cache");
+        while Cache_aux /= null loop
+            Put(To_UString_Base10(Cache_aux.all.Route.Adresse));
+            Put(" ");
+            Put(To_UString_Base10(Cache_aux.all.Route.Masque));
+            Put(" ");
+            Put(Cache_aux.all.Route.Port);
+            New_Line;
+            Cache_aux := Cache_aux.Suivant;
+        end loop;
+        New_Line;
+    end Afficher_Cache;
+
     procedure Vider (Cache : in out T_Cache) is
         A_detruire : T_Cache;
     begin

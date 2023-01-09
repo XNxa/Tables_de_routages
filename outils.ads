@@ -16,6 +16,6 @@ package Outils is
     function "+" (Item : in String) return Unbounded_String
             renames To_Unbounded_String;
 
-    type T_Commandes is (table, cache, stat, fin);
+    type T_Commandes is (C_table, C_cache, C_stat, C_fin);
 
 end Outils;

@@ -139,16 +139,16 @@ procedure Routeur_LL is
         Get_Line(Fichier, Lecture);
 
         if Lecture = "table" then
-            Commande := Table;
+            Commande := C_Table;
 
         elsif Lecture = "cache" then
-            Commande := Cache;
+            Commande := C_Cache;
 
         elsif Lecture = "stat" then
-            Commande := Stat; 
+            Commande := C_Stat; 
         
         elsif Lecture = "fin" then
-            Commande := Fin;
+            Commande := C_Fin;
         end if;
     end Lire_Commande;
 
@@ -192,6 +192,7 @@ begin
 
     begin
     while not End_Of_File(FD_Paquet) loop
+    begin
     
         -- Lecture d'un Paquet
         Lire_Adresse (Paquet, FD_Paquet);
@@ -210,23 +211,25 @@ begin
 
         -- TODO :
         -- Traitement spécial si pas adresse mais mot clé de commande utilisateur
-
+    exception
+        when Data_Error =>
+            Lire_Commande (FD_Paquet, Commande);
+            case Commande is
+                when C_table =>
+                    Afficher_Table_Routage (Table_Routage);
+                when C_cache =>
+                    Afficher_Cache (Cache);
+                when C_stat =>
+                    null;
+                    -- Afficher_Stat (Cache);
+                when C_fin =>
+                    exit;
+            end case;
+    end;
     end loop;
     exception
         when End_Error =>
             Put("Attention, Blancs en surplus à la fin du fichier : " & f_paquet);
-        when Data_Error =>
-            Lire_Commande (FD_Paquet, Commande);
-            case Commande is
-                when Table =>
-                    Afficher_Table_Routage (Table_Routage);
-                when Cache =>
-                    Afficher_Cache (Cache);
-                when Stat =>
-                    -- Afficher_Stat (Cache);
-                when Fin =>
-                    Put("Fin du programme");
-            end case;
     end;
     Close(FD_Paquet);
     Close(FD_Resultat);

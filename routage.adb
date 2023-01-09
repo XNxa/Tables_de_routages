@@ -1,5 +1,4 @@
 with Ada.Unchecked_Deallocation;
-with Ada.Text_IO; use Ada.Text_IO;
 
 package body Routage is
 
@@ -40,9 +39,17 @@ package body Routage is
     procedure Afficher_Table_Routage (Table_Routage : in T_Table_Routage) is
         Table_Aux : T_Table_Routage := Table_Routage;
     begin
+        Put_line("Table");
         while Table_Aux /= null loop
-            -- TO DO
+            Put(To_UString_Base10(Table_Aux.all.Destination));
+            Put(" ");
+            Put(To_UString_Base10(Table_Aux.all.Masque));
+            Put(" ");
+            Put(Table_Aux.all.InterfaceRoute);
+            New_Line;
+            Table_Aux := Table_Aux.all.Suivant;
         end loop;
+        New_Line;
     end Afficher_Table_Routage;
 
     procedure Vider (Table_Routage : in out T_Table_Routage) is 
