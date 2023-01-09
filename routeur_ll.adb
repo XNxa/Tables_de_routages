@@ -199,7 +199,7 @@ begin
 
         Route_cache := Chercher (Cache, Paquet);
 
-        if Route_Cache.Port /= "null" then 
+        if Route_Cache.Port /= +"null" then 
             Mettre_a_jour (Cache, Route_Cache, To_string(politique));
         else 
             Route_cache := Chercher_Route (Table_Routage, Paquet);
