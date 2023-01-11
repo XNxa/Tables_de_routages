@@ -12,35 +12,25 @@ procedure Test_Adresse_IP is
     Masque : T_adresse_ip;
     Compatible : Boolean;
     Adresse_String : Unbounded_String;
-    Octet1, Octet2, Octet3, Octet4 : Integer;
     Fichier : File_Type;
     SupMasque : Boolean;
 
     procedure Test_de_la_fonction_Initialiser is
     begin
-        Octet1 := 192;
-        Octet2 := 168;
-        Octet3 := 0;
-        Octet4 := 1;
-        Initialiser(Adresse1, Octet1, Octet2, Octet3, Octet4);
+
+        Initialiser(Adresse1, 192, 168, 0, 1);
         Adresse_String := To_UString_Base10(Adresse1);
         Put_Line("Test de la fonction Initialiser avec octets quelconques : " & Adresse_String);
         pragma Assert (Adresse_String = "192.168.0.1");
 
-        Octet1 := 0;
-        Octet2 := 0;
-        Octet3 := 0;
-        Octet4 := 0;
-        Initialiser(Adresse1, Octet1, Octet2, Octet3, Octet4);
+
+        Initialiser(Adresse1, 0, 0, 0, 0);
         Adresse_String := To_UString_Base10(Adresse1);
         Put_Line("Test de la fonction Initialiser avec un octet de valeur minimale : " & Adresse_String);
         pragma Assert (Adresse_String = "0.0.0.0");
 
-        Octet1 := 255;
-        Octet2 := 255;
-        Octet3 := 255;
-        Octet4 := 255;
-        Initialiser(Adresse1, Octet1, Octet2, Octet3, Octet4);
+
+        Initialiser(Adresse1, 255, 255, 255, 255);
         Adresse_String := To_UString_Base10(Adresse1);
         Put_Line("Test de la fonction Initialiser avec un octet de valeur maximale : " & Adresse_String);
         pragma Assert (Adresse_String = "255.255.255.255");
@@ -70,11 +60,8 @@ procedure Test_Adresse_IP is
 
     procedure Test_To_UString_Base10 is
     begin
-        Octet1 := 192;
-        Octet2 := 168;
-        Octet3 := 0;
-        Octet4 := 1;
-        Initialiser(Adresse1, Octet1, Octet2, Octet3, Octet4);
+
+        Initialiser(Adresse1, 192, 168, 0, 1);
         Adresse_String := To_UString_Base10(Adresse1);
         Put_Line("Test Test_To_UString_Base10 avec octets quelconques : " & Adresse_String);
         pragma Assert (Adresse_String = "192.168.0.1");
@@ -84,39 +71,15 @@ procedure Test_Adresse_IP is
 
     procedure Test_Est_Compatible is
     begin
-        Octet1 := 168;
-        Octet2 := 97;
-        Octet3 := 0;
-        Octet4 := 0;
-        Initialiser(Adresse1, Octet1, Octet2, Octet3, Octet4);
-        Octet1 := 255;
-        Octet2 := 255;
-        Octet3 := 255;
-        Octet4 := 255;
-        Initialiser(Masque, Octet1, Octet2, Octet3, Octet4);
-        Octet1 := 168;
-        Octet2 := 97;
-        Octet3 := 18;
-        Octet4 := 22;
-        Initialiser(Adresse2, Octet1, Octet2, Octet3, Octet4);
+
+        Initialiser(Adresse1, 192, 168, 0, 0);
+        Initialiser(Masque, 255, 255, 255, 255);
+        Initialiser(Adresse2, 192, 168, 18, 22);
         Compatible := Est_Compatible(Adresse2, Masque, Adresse1);
         Put_Line("Test avec deux adresses partiellement différentes et un masque long : " & Boolean'Image(Compatible));
 
-        Octet1 := 168;
-        Octet2 := 97;
-        Octet3 := 0;
-        Octet4 := 0;
-        Initialiser(Adresse1, Octet1, Octet2, Octet3, Octet4);
-        Octet1 := 255;
-        Octet2 := 255;
-        Octet3 := 0;
-        Octet4 := 0;
-        Initialiser(Masque, Octet1, Octet2, Octet3, Octet4);
-        Octet1 := 168;
-        Octet2 := 97;
-        Octet3 := 18;
-        Octet4 := 22;
-        Initialiser(Adresse2, Octet1, Octet2, Octet3, Octet4);
+
+        Initialiser(Masque, 255, 255, 0, 0);
         Compatible := Est_Compatible(Adresse2, Masque, Adresse1);
         Put_Line("Test avec deux adresses partiellement différentes et un masque court : " & Boolean'Image(Compatible));
 
@@ -125,34 +88,19 @@ procedure Test_Adresse_IP is
 
     procedure Test_Sup_Masque is
     begin
-        Octet1 := 0;
-        Octet2 := 0;
-        Octet3 := 0;
-        Octet4 := 0;
-        Initialiser(Adresse1, Octet1, Octet2, Octet3, Octet4);
-        Initialiser(Adresse2, Octet1, Octet2, Octet3, Octet4);
+
+        Initialiser(Adresse1, 0, 0, 0, 0);
+        Initialiser(Adresse2, 0, 0, 0, 0);
         SupMasque := Sup_Masque(Adresse1, Adresse2);
         Put_Line("Test avec deux adresses égales : " & Boolean'Image(SupMasque));
 
-        Octet1 := 0;
-        Octet2 := 0;
-        Octet3 := 0;
-        Octet4 := 1;
-        Initialiser(Adresse1, Octet1, Octet2, Octet3, Octet4);
-        Octet4 := 0;
-        Initialiser(Adresse2, Octet1, Octet2, Octet3, Octet4);
+        Initialiser(Adresse1, 0, 0, 0, 1);
         SupMasque := Sup_Masque(Adresse1, Adresse2);
-        Put_Line("Test avec Adresse de droite supérieure à Adresse de gauche : " & Boolean'Image(SupMasque));
-
-        Octet1 := 0;
-        Octet2 := 0;
-        Octet3 := 0;
-        Octet4 := 1;
-        Initialiser(Adresse1, Octet1, Octet2, Octet3, Octet4);
-        Octet4 := 0;
-        Initialiser(Adresse2, Octet1, Octet2, Octet3, Octet4);
-        SupMasque := Sup_Masque(Adresse2, Adresse1);
         Put_Line("Test avec Adresse de gauche supérieure à Adresse de droite : " & Boolean'Image(SupMasque));
+
+
+        SupMasque := Sup_Masque(Adresse2, Adresse1);
+        Put_Line("Test avec Adresse de droite supérieure à Adresse de gauche : " & Boolean'Image(SupMasque));
 
         Put_Line("Fonction Sup_Masque OK");
     end Test_Sup_Masque;
