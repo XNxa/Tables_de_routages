@@ -1,15 +1,12 @@
 with Adresse_IP; use Adresse_IP;
 with Outils; use Outils;
 
-generic
-    Taille_Cache : Integer;
-
 package Cache_L is
 
     type T_Cache is limited private;
 
     -- Initialiser la liste chainée vide representant le cache
-    procedure Initialiser (Cache : out T_Cache);
+    procedure Initialiser (Cache : out T_Cache; taille : in Integer);
 
     -- Chercher une adresse dans le cache
     function Chercher (Cache : in T_Cache; PaquetARouter : in T_Adresse_IP) return T_Route;
@@ -28,6 +25,8 @@ package Cache_L is
 
 
 private
+
+    Taille_du_cache : Integer := 10;
 
     type T_Cellule;
 

@@ -16,7 +16,7 @@ package body Cache_L is
             i := i + 1;
             Cache_aux := Cache_aux.all.Suivant;
         end loop;
-        return (i = Taille_Cache);
+        return (i = Taille_du_Cache);
     end Cache_plein;
 
     procedure Supprimer (Cache : in out T_Cache; Route : in T_Route) is
@@ -80,8 +80,9 @@ package body Cache_L is
         end if;
     end Augmenter_Frequence;
 
-    procedure Initialiser (Cache : out T_Cache) is 
+    procedure Initialiser (Cache : out T_Cache; taille : in Integer) is 
     begin
+        Taille_du_Cache := taille;
         Cache := null;
     end Initialiser;
 

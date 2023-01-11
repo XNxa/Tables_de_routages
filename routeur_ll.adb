@@ -5,17 +5,11 @@ with Ada.Text_IO.Unbounded_IO;  use Ada.Text_IO.Unbounded_IO;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Adresse_IP; use Adresse_IP;
 with Routage; use Routage;
-with Cache_L;
+with Cache_L; use Cache_L;
 with Outils; use Outils;
 
 procedure Routeur_LL is
     
-    procedure Afficher_Erreur (Message : in String) is 
-    begin
-        Put_Line(Message);
-        raise Option_Erreur;
-    end Afficher_Erreur;
-
     procedure Initialiser_Options (taille_cache : out Integer; politique : out Unbounded_String ; afficher_stat : out Boolean ; 
         f_table : out Unbounded_String ; f_paquet : out Unbounded_String ; f_resultat : out Unbounded_String ) is
 
@@ -113,25 +107,6 @@ procedure Routeur_LL is
         New_Line(Fichier);
     end Enregister_Resultat;
 
-    procedure Lire_Commande (Fichier : File_Type ; Commande : out T_Commandes) is
-        Lecture : Unbounded_String;
-    begin
-        Get_Line(Fichier, Lecture);
-
-        if Lecture = "table" then
-            Commande := C_Table;
-
-        elsif Lecture = "cache" then
-            Commande := C_Cache;
-
-        elsif Lecture = "stat" then
-            Commande := C_Stat; 
-        
-        elsif Lecture = "fin" then
-            Commande := C_Fin;
-        end if;
-    end Lire_Commande;
-
     -- Valeur par défault des options
     taille_cache : Integer := 10;
     politique : Unbounded_String := +"FIFO";
@@ -140,20 +115,17 @@ procedure Routeur_LL is
     f_paquet : Unbounded_String := +"paquet.txt";
     f_resultat : Unbounded_String := +"resultats.txt";
 
-    -- Variables pour l'ouverture du fichier f_table
+    -- Structures de données utilisées par le programme
     Table_Routage : T_Table_Routage;
-
-    -- Variables pour l'ecriture des resultats
-    FD_Paquet : File_Type;
-    Paquet : T_adresse_ip;
-    FD_Resultat : File_Type;
-
-    package Cache_Liste is new Cache_L (taille_cache);
-    use Cache_Liste;
-
     Cache : T_Cache;
-    Route : T_Route;
 
+    -- Descripteur de fichier pour les entrées sorties
+    FD_Resultat : File_Type;
+    FD_Paquet : File_Type;
+
+
+    Paquet : T_adresse_ip;
+    Route : T_Route;
     Commande : T_Commandes;
 
 begin
@@ -168,7 +140,7 @@ begin
     Create(FD_Resultat, Out_File, To_String(f_resultat));
 
     -- Initialiser le cache
-    Initialiser (Cache);
+    Initialiser (Cache, taille_cache);
 
     begin
     while not End_Of_File(FD_Paquet) loop
@@ -177,6 +149,7 @@ begin
         -- Lecture d'un Paquet
         Lire_Adresse (Paquet, FD_Paquet);
 
+        -- Chercher la route associée au paquet
         Route := Chercher (Cache, Paquet);
 
         if Route.Port = +"null" then 
@@ -186,6 +159,7 @@ begin
             Mettre_a_jour (Cache, Route, To_string(politique));
         end if;
 
+        -- Enregistrer le résultat dans le fichier de sortie
         Enregister_Resultat (FD_Resultat, Route);
 
     exception

@@ -1,8 +1,8 @@
-With Ada.Text_IO; use Ada.Text_IO;
+With Ada.Text_IO.Unbounded_IO; use Ada.Text_IO.Unbounded_IO;
 
 package body Outils is
 
-procedure Afficher_Utilisation is
+    procedure Afficher_Utilisation is
     begin
         New_Line;
         Put_Line("Utilisation des options en ligne de commande :");
@@ -14,5 +14,30 @@ procedure Afficher_Utilisation is
         Put_Line("-p <fichier> : Définir le nom du fichier contenant les paquets à router. Défault : paquet.txt");
         Put_Line("-r <fichier> : Définir le nom du fichier contenant les résultats. Défault : resultats.txt");
     end Afficher_Utilisation;
+
+    procedure Afficher_Erreur (Message : in String) is 
+    begin
+        Put_Line(Message);
+        raise Option_Erreur;
+    end Afficher_Erreur;
+
+    procedure Lire_Commande (Fichier : File_Type ; Commande : out T_Commandes) is
+        Lecture : Unbounded_String;
+    begin
+        Get_Line(Fichier, Lecture);
+
+        if Lecture = "table" then
+            Commande := C_Table;
+
+        elsif Lecture = "cache" then
+            Commande := C_Cache;
+
+        elsif Lecture = "stat" then
+            Commande := C_Stat; 
+        
+        elsif Lecture = "fin" then
+            Commande := C_Fin;
+        end if;
+    end Lire_Commande;
 
 end Outils;
