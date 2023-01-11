@@ -1,4 +1,7 @@
 with Ada.Unchecked_Deallocation;
+with Ada.Text_IO.Unbounded_IO;  use Ada.Text_IO.Unbounded_IO;
+with Ada.Text_IO; use Ada.Text_IO;
+
 
 package body Cache_L is
     
@@ -64,7 +67,7 @@ package body Cache_L is
         end if;
     end Ajouter_Fin;
 
-    procedure Augmenter_Frequence (Cache : in out T_Cache; Route : in T_Route) is
+    procedure Augmenter_Frequence (Cache : in T_Cache; Route : in T_Route) is
     begin
         if Cache /= null then
             if Cache.All.Route = Route then
@@ -90,9 +93,10 @@ package body Cache_L is
         Initialiser (Adresse_non_trouvee, 0, 0, 0, 0);
         Route_non_trouvee := T_Route'(Adresse_non_trouvee, Adresse_non_trouvee, +"null");
 
-        while Cache_aux /= null and then not Est_Compatible(Cache_aux.All.Route.Adresse,Cache_aux.All.Route.Masque, PaquetARouter) loop
+        while Cache_aux /= null and then not Est_Compatible(PaquetARouter, Cache_aux.All.Route.Masque, Cache_aux.All.Route.Adresse ) loop
             Cache_aux := Cache_aux.Suivant;
         end loop;
+
         if Cache_aux = null then
             return Route_non_trouvee;
         else

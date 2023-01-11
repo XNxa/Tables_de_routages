@@ -10,26 +10,6 @@ with Outils; use Outils;
 
 procedure Routeur_LL is
     
-    -- Procedure qui rappelle l'utilisation des options
-    -- Cette procédure est appelée lorsque l'exception Option_Erreur est lévée
-    procedure Afficher_Utilisation is
-    begin
-        New_Line;
-        Put_Line("Utilisation des options en ligne de commande :");
-        Put_Line("-c <taille> : Définir la taille du cache. La valeur 0 indique qu’il n y a pas de cache. La valeur par défaut est 10.");
-        Put_Line("-P FIFO|LRU|LFU : Définir la politique utilisée pour le cache (par défaut FIFO)");
-        Put_Line("-s : Afficher les statistiques. C’est l’option activée par défaut.");
-        Put_Line("-S : Ne pas afficher les statistiques.");
-        Put_Line("-t <fichier> : Définir le nom du fichier contenant les routes de la table de routage. Défault : table.txt");
-        Put_Line("-p <fichier> : Définir le nom du fichier contenant les paquets à router. Défault : paquet.txt");
-        Put_Line("-r <fichier> : Définir le nom du fichier contenant les résultats. Défault : resultats.txt");
-    end Afficher_Utilisation;
-
-    -- Surcharge l'opérateur unaire "+" pour convertir une String
-	-- en Unbounded_String.
-	function "+" (Item : in String) return Unbounded_String
-		renames To_Unbounded_String;
-
     procedure Afficher_Erreur (Message : in String) is 
     begin
         Put_Line(Message);
@@ -172,7 +152,7 @@ procedure Routeur_LL is
     use Cache_Liste;
 
     Cache : T_Cache;
-    Route_Cache : T_Route;
+    Route : T_Route;
 
     Commande : T_Commandes;
 
@@ -197,20 +177,17 @@ begin
         -- Lecture d'un Paquet
         Lire_Adresse (Paquet, FD_Paquet);
 
-        Route_cache := Chercher (Cache, Paquet);
+        Route := Chercher (Cache, Paquet);
 
-        if Route_Cache.Port /= +"null" then 
-            Mettre_a_jour (Cache, Route_Cache, To_string(politique));
-        else 
-            Route_cache := Chercher_Route (Table_Routage, Paquet);
-            Enregistrer (Cache, Route_Cache, To_String(politique));
+        if Route.Port = +"null" then 
+            Route := Chercher_Route (Table_Routage, Paquet);
+            Enregistrer (Cache, Route, To_String(politique));
+        else
+            Mettre_a_jour (Cache, Route, To_string(politique));
         end if;
 
-        Enregister_Resultat (FD_Resultat, Route_Cache);
+        Enregister_Resultat (FD_Resultat, Route);
 
-
-        -- TODO :
-        -- Traitement spécial si pas adresse mais mot clé de commande utilisateur
     exception
         when Data_Error =>
             Lire_Commande (FD_Paquet, Commande);
@@ -227,6 +204,8 @@ begin
             end case;
     end;
     end loop;
+    
+    
     exception
         when End_Error =>
             Put("Attention, Blancs en surplus à la fin du fichier : " & f_paquet);
@@ -234,8 +213,9 @@ begin
     Close(FD_Paquet);
     Close(FD_Resultat);
 
-    -- Vider la table de routage à la fin de son utilisation    
+    -- Vider la table de routage et le cache à la fin de leurs utilisations    
     Vider(Table_Routage);
+    Vider(Cache);
 
     exception
         when Option_Erreur =>

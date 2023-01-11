@@ -69,6 +69,23 @@ package body Adresse_IP is
         return ((Adresse and Masque) = Destination);
     end Est_Compatible;
 
+    function Adapter_Masque (Paquet : in T_adresse_ip) return T_adresse_ip is
+        Masque : T_adresse_ip;
+    begin
+        if (Paquet / UN_OCTET ** 3) mod UN_OCTET = 0 then
+            Initialiser(Masque, 0, 0, 0, 0);
+        elsif (Paquet / UN_OCTET ** 2) mod UN_OCTET = 0 then
+            Initialiser(Masque, 255, 0, 0, 0);
+        elsif (Paquet / UN_OCTET ** 1) mod UN_OCTET = 0 then
+            Initialiser(Masque, 255, 255, 0, 0);
+        elsif (Paquet mod UN_OCTET) = 0 then
+            Initialiser(Masque, 255, 255, 255, 0);
+        else
+            Initialiser(Masque, 255, 255, 255, 255);
+        end if;
+        return Masque;
+    end Adapter_Masque;
+
     function Sup_Masque (Left : T_adresse_ip; Right : T_adresse_ip) return Boolean is
     begin
         return (Left/2)>(Right/2) or ((Left/2)=(Right/2) and ((Left and 2**0) >= (Right and 2**0)));

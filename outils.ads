@@ -13,9 +13,16 @@ package Outils is
         Port : Unbounded_String;
     end record;
 
-    function "+" (Item : in String) return Unbounded_String
-            renames To_Unbounded_String;
-
     type T_Commandes is (C_table, C_cache, C_stat, C_fin);
+
+        -- Procedure qui rappelle l'utilisation des options
+    -- Cette procédure est appelée lorsque l'exception Option_Erreur est lévée
+    procedure Afficher_Utilisation;
+
+    -- Surcharge l'opérateur unaire "+" pour convertir une String
+	-- en Unbounded_String.
+	function "+" (Item : in String) return Unbounded_String
+		renames To_Unbounded_String;
+
 
 end Outils;

@@ -25,6 +25,9 @@ package Adresse_IP is
     function Est_Compatible (Adresse : in T_adresse_ip; Masque : in T_adresse_ip;
              Destination : in T_adresse_ip) return Boolean;
 
+    -- Permet d'obtenir un masque adapté a une adresse
+    function Adapter_Masque (Paquet : in T_adresse_ip) return T_adresse_ip;
+
     -- Permet de avoir si le membre de gauche est superieur ou égal au membre de droite
     function Sup_Masque (Left : T_adresse_ip; Right : T_adresse_ip) return Boolean;
 

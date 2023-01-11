@@ -1,4 +1,6 @@
 with Ada.Unchecked_Deallocation;
+with Ada.Text_IO.Unbounded_IO;  use Ada.Text_IO.Unbounded_IO;
+with Ada.Text_IO; use Ada.Text_IO;
 
 package body Routage is
 
@@ -18,21 +20,18 @@ package body Routage is
 
     function Chercher_Route (Table_Routage : in T_Table_Routage ; PaquetARouter : in T_adresse_ip) return T_Route is
         Table_Aux : T_Table_Routage := Table_Routage;
-        Masque : T_adresse_ip;
-        InterfaceARetourner : Unbounded_String;
         RouteARetourner : T_Route;
     begin
-        Initialiser(Masque, 0, 0, 0, 0);
+        Initialiser(RouteARetourner.Masque, 0, 0, 0, 0);
         while Table_Aux /= null loop
-            if Est_Compatible(PaquetARouter, Table_Aux.all.Masque, Table_Aux.all.Destination) and Sup_Masque(Table_Aux.all.Masque, Masque) then
-                Masque := Table_aux.all.Masque;
-                InterfaceARetourner := Table_aux.all.InterfaceRoute;
+            if Est_Compatible(PaquetARouter, Table_Aux.all.Masque, Table_Aux.all.Destination) and Sup_Masque(Table_Aux.all.Masque, RouteARetourner.Masque) then
+                RouteARetourner.Adresse := PaquetARouter;
+                RouteARetourner.Masque := Table_aux.all.Masque;
+                RouteARetourner.Port := Table_aux.all.InterfaceRoute;
             end if;
             Table_Aux := Table_aux.all.Suivant;
         end loop;
-        RouteARetourner.Adresse := PaquetARouter;
-        RouteARetourner.Masque := Masque;
-        RouteARetourner.Port := InterfaceARetourner;
+            RouteARetourner.Masque := Adresse_IP.Adapter_Masque(PaquetARouter);
         return RouteARetourner;
     end Chercher_Route;
 
