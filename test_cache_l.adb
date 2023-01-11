@@ -145,21 +145,11 @@ procedure Test_Cache_L is
         Afficher_Cache(My_Cache);
     end Test_Mettre_a_jour_LFU;
 
-
-
-
-
-
-
-
-
     procedure Test_Vider is
     begin
         Vider(My_Cache);
         Afficher_Cache(My_Cache);
     end Test_Vider;
-
-
 
 
 begin
@@ -173,8 +163,3 @@ begin
     Test_Vider;
 
 end Test_Cache_L;
-
-
-
-
-
