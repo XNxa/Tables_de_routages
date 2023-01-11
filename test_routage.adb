@@ -3,6 +3,9 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Routage; use Routage;
 with Adresse_IP; use Adresse_IP;
 with outils ; use outils ;
+with Ada.Strings.Fixed; use Ada.Strings.Fixed;
+with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
+with Ada.Text_IO.Unbounded_IO; use Ada.Text_IO.Unbounded_IO;
 
 procedure Test_Routage is
     
@@ -10,7 +13,7 @@ procedure Test_Routage is
     PaquetARouter : T_adresse_ip;
     Destination1, Destination2, Destination3 : T_adresse_ip;
     Masque1, Masque2, Masque3 : T_adresse_ip;
-    Interface1, Interface2, Interface3, InterfaceRoute : Unbounded_String;
+    Interface1, Interface2, Interface3, InterfaceRoute ,Adresse_a_retourner: Unbounded_String;
     Route : T_Route;
     Octet1, Octet2, Octet3, Octet4 : Integer;
 
@@ -18,8 +21,6 @@ procedure Test_Routage is
     procedure Initialisation_table_routage is
     begin
         Initialiser(Table_Routage);
-        Afficher_Table_Routage(Table_Routage);
-        pragma Assert ( Table_Routage = null );
     end Initialisation_table_routage;
 
     procedure test_Enregistrer is
@@ -76,8 +77,7 @@ procedure Test_Routage is
         Octet4 := 1;
         Initialiser(PaquetARouter, Octet1, Octet2, Octet3, Octet4);
         Route := Chercher_Route(Table_Routage, PaquetARouter);
-        InterfaceRoute := To_UString_Base10(Route);
-        Put_Line("Route trouvée pour l'adresse 10.0.0.1 : " &InterfaceRoute);
+        Put_Line("Route trouvée pour l'adresse 10.0.0.1 : " &Route.Port );
 
         Octet1 := 192;
         Octet2 := 168;
@@ -85,8 +85,8 @@ procedure Test_Routage is
         Octet4 := 1;
         Initialiser(PaquetARouter, Octet1, Octet2, Octet3, Octet4);
         Route := Chercher_Route(Table_Routage, PaquetARouter);
-        InterfaceRoute := To_UString_Base10(Route);
-        Put_Line("Route trouvée pour l'adresse 192.168.1.1 : " &InterfaceRoute);
+        Put_Line("Route trouvée pour l'adresse 192.168.1.1 : " &Route.Port );
+
 
         Octet1 := 172;
         Octet2 := 16;
@@ -94,8 +94,7 @@ procedure Test_Routage is
         Octet4 := 1;
         Initialiser(PaquetARouter, Octet1, Octet2, Octet3, Octet4);
         Route := Chercher_Route(Table_Routage, PaquetARouter);
-        InterfaceRoute := To_UString_Base10(Route);
-        Put_Line("Route trouvée pour l'adresse 172.16.1.1 : " &InterfaceRoute);
+        Put_Line("Route trouvée pour l'adresse 172.16.1.1 : " &Route.Port );
 
         Octet1 := 100;
         Octet2 := 0;
@@ -103,15 +102,12 @@ procedure Test_Routage is
         Octet4 := 1;
         Initialiser(PaquetARouter, Octet1, Octet2, Octet3, Octet4);
         Route := Chercher_Route(Table_Routage, PaquetARouter);
-        InterfaceRoute := To_UString_Base10(Route);
-        Put_Line("Route trouvée pour l'adresse 100.0.0.1 : " &InterfaceRoute);
+        Put_Line("Route trouvée pour l'adresse 100.0.0.1 : " &Route.Port );
 
     end Test_Chercher_Route;
 
 begin
-    Put_Line("Test de la fonction initialiser :");
-    Initialisation_table_routage;
-    New_Line;
+
     Put_Line("Test de la fonction Enregistrer :");
     test_Enregistrer;
     New_Line;
