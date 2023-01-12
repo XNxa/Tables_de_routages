@@ -11,10 +11,8 @@ procedure Test_Routage is
     
     Table_Routage : T_Table_Routage;
     PaquetARouter : T_adresse_ip;
-    Destination1, Destination2, Destination3 : T_adresse_ip;
-    Masque1, Masque2, Masque3 : T_adresse_ip;
     Interface1, Interface2, Interface3, InterfaceRoute ,Adresse_a_retourner: Unbounded_String;
-    Route : T_Route;
+    Route,Route1, Route2, Route3, Route4 : T_Route;
 
     procedure Initialisation_table_routage is
     begin
@@ -24,25 +22,25 @@ procedure Test_Routage is
     procedure test_Enregistrer is
     begin
 
-        Initialiser(Destination1, 10, 0, 0, 0);
-        Initialiser(Masque1, 255, 255, 255, 0);
-        Interface1 := To_Unbounded_String("Interface1");
-        Enregistrer(Table_Routage, Destination1, Masque1, Interface1);
+        Initialiser(Route1.Adresse, 10, 0, 0, 0);
+        Initialiser(Route1.Masque, 255, 255, 255, 0);
+        Route1.Port := +"Interface1";
+        Enregistrer(Table_Routage, Route1);
 
-        Initialiser(Destination2, 192, 168, 1, 0);
-        Initialiser(Masque2, 255, 255, 255, 0);
-        Interface2 := To_Unbounded_String("Interface2");
-        Enregistrer(Table_Routage, Destination2, Masque2, Interface2);
+        Initialiser(Route2.Adresse, 192, 168, 1, 0);
+        Initialiser(Route2.Masque, 255, 255, 255, 0);
+        Route2.Port := +"Interface2";
+        Enregistrer(Table_Routage, Route2);
 
-        Initialiser(Destination3, 172, 16, 0, 0);
-        Initialiser(Masque3, 255, 240, 0,0);
-        Interface3 := To_Unbounded_String("Interface3");
-        Enregistrer(Table_Routage, Destination3, Masque3, Interface3);
+        Initialiser(Route3.Adresse, 172, 16, 0, 0);
+        Initialiser(Route3.Masque, 255, 240, 0,0);
+        Route3.Port := +"Interface3";
+        Enregistrer(Table_Routage, Route3);
 
-        Initialiser(Destination1, 0, 0, 0, 0);
-        Initialiser(Masque1, 0, 0, 0, 0);
-        Interface1 := To_Unbounded_String("Interface4");
-        Enregistrer(Table_Routage, Destination1, Masque1, Interface1);
+        Initialiser(Route4.Adresse, 0, 0, 0, 0);
+        Initialiser(Route4.Masque, 0, 0, 0, 0);
+        Route4.Port := +"Interface4";
+        Enregistrer(Table_Routage, Route4);
 
         Afficher_Table_Routage(Table_Routage);
 
