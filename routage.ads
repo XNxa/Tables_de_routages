@@ -10,8 +10,7 @@ package Routage is
     procedure Initialiser (Table_Routage : out T_Table_Routage);
 
 	-- Ajouter une nouvelle cellule dans la liste chainée
-    procedure Enregistrer (Table_Routage : in out T_Table_Routage ; 
-            Destination : T_adresse_ip ; Masque : T_adresse_ip; InterfaceRoute : Unbounded_string);
+    procedure Enregistrer (Table_Routage : in out T_Table_Routage ; Route : T_Route);
 
 	-- Chercher si une adresse correspond à une route dans la table de routage
 	-- Renvoie l'interface de la route qui correspond le mieux
@@ -31,9 +30,7 @@ private
 	type T_Table_Routage is access T_Cellule;
 	
 	type T_Cellule is record
-		Destination : T_adresse_ip;
-        Masque : T_adresse_ip;
-		InterfaceRoute : Unbounded_String;
+		Route : T_Route;
 		Suivant: T_Table_Routage;
 	end record;
 

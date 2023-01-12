@@ -72,8 +72,7 @@ procedure Routeur_LL is
 
     procedure Importer_Table (Table_Routage : in out T_Table_Routage ; f_table : in Unbounded_String) is
         FD_Table : File_Type;
-        InterfaceLue : Unbounded_String;
-        Destination, Masque : T_adresse_ip; 
+        Route : T_Route;
     begin
         Open(FD_Table, In_File, To_String(f_table));
         -- Ouvrir f_table en lecture
@@ -83,13 +82,14 @@ procedure Routeur_LL is
         while not End_Of_File(FD_Table) loop
         -- Séparer la ligne courante en Destination | Masque | Interface
 
-            Lire_Adresse (Destination, FD_Table); -- Destination
-            Lire_Adresse (Masque, FD_Table); -- Masque
-            InterfaceLue := Get_line(FD_Table); -- Interface
-            Trim(InterfaceLue, Both); -- Supprimer les espaces blancs
+            Lire_Adresse (Route.Adresse, FD_Table); -- Destination
+            Lire_Adresse (Route.Masque, FD_Table); -- Masque
+            Route.Port := Get_line(FD_Table); -- Interface
+            Trim(Route.Port, Both); -- Supprimer les espaces blancs
+
 
             -- Enregistrer la ligne courante dans la table de routage
-            Enregistrer(Table_Routage, Destination, Masque, InterfaceLue);
+            Enregistrer(Table_Routage, Route);
 
         end loop;
         exception

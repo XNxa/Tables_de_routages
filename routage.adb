@@ -12,10 +12,9 @@ package body Routage is
         Table_Routage := null;
     end Initialiser;
 
-    procedure Enregistrer (Table_Routage : in out T_Table_Routage ; Destination : T_adresse_ip ; Masque : T_adresse_ip; 
-                InterfaceRoute : Unbounded_String) is 
+    procedure Enregistrer (Table_Routage : in out T_Table_Routage ; Route : T_route) is 
     begin
-        Table_Routage := new T_Cellule'(Destination, Masque, InterfaceRoute, Table_Routage);
+        Table_Routage := new T_Cellule'(Route, Table_Routage);
     end Enregistrer;
 
     function Chercher_Route (Table_Routage : in T_Table_Routage ; PaquetARouter : in T_adresse_ip) return T_Route is
@@ -24,10 +23,10 @@ package body Routage is
     begin
         Initialiser(RouteARetourner.Masque, 0, 0, 0, 0);
         while Table_Aux /= null loop
-            if Est_Compatible(PaquetARouter, Table_Aux.all.Masque, Table_Aux.all.Destination) and Sup_Masque(Table_Aux.all.Masque, RouteARetourner.Masque) then
+            if Est_Compatible(PaquetARouter, Table_Aux.all.Route.Masque, Table_Aux.all.Route.Adresse) and Sup_Masque(Table_Aux.all.Route.Masque, RouteARetourner.Masque) then
                 RouteARetourner.Adresse := PaquetARouter;
-                RouteARetourner.Masque := Table_aux.all.Masque;
-                RouteARetourner.Port := Table_aux.all.InterfaceRoute;
+                RouteARetourner.Masque := Table_aux.all.Route.Masque;
+                RouteARetourner.Port := Table_aux.all.Route.Port;
             end if;
             Table_Aux := Table_aux.all.Suivant;
         end loop;
@@ -40,11 +39,11 @@ package body Routage is
     begin
         Put_line("Table");
         while Table_Aux /= null loop
-            Put(To_UString_Base10(Table_Aux.all.Destination));
+            Put(To_UString_Base10(Table_Aux.all.Route.Adresse));
             Put(" ");
-            Put(To_UString_Base10(Table_Aux.all.Masque));
+            Put(To_UString_Base10(Table_Aux.all.Route.Masque));
             Put(" ");
-            Put(Table_Aux.all.InterfaceRoute);
+            Put(Table_Aux.all.Route.Port);
             New_Line;
             Table_Aux := Table_Aux.all.Suivant;
         end loop;
