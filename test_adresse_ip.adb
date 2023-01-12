@@ -77,11 +77,12 @@ procedure Test_Adresse_IP is
         Initialiser(Adresse2, 192, 168, 18, 22);
         Compatible := Est_Compatible(Adresse2, Masque, Adresse1);
         Put_Line("Test avec deux adresses partiellement différentes et un masque long : " & Boolean'Image(Compatible));
-
+        pragma Assert (not Compatible);
 
         Initialiser(Masque, 255, 255, 0, 0);
         Compatible := Est_Compatible(Adresse2, Masque, Adresse1);
         Put_Line("Test avec deux adresses partiellement différentes et un masque court : " & Boolean'Image(Compatible));
+        pragma Assert (Compatible);
 
         Put_Line("Fonction Est_Compatible OK");
     end Test_Est_Compatible;
@@ -93,14 +94,16 @@ procedure Test_Adresse_IP is
         Initialiser(Adresse2, 0, 0, 0, 0);
         SupMasque := Sup_Masque(Adresse1, Adresse2);
         Put_Line("Test avec deux adresses égales : " & Boolean'Image(SupMasque));
+        pragma Assert (SupMasque);
 
         Initialiser(Adresse1, 0, 0, 0, 1);
         SupMasque := Sup_Masque(Adresse1, Adresse2);
         Put_Line("Test avec Adresse de gauche supérieure à Adresse de droite : " & Boolean'Image(SupMasque));
-
+        pragma Assert (SupMasque);
 
         SupMasque := Sup_Masque(Adresse2, Adresse1);
         Put_Line("Test avec Adresse de droite supérieure à Adresse de gauche : " & Boolean'Image(SupMasque));
+        pragma Assert (not SupMasque);
 
         Put_Line("Fonction Sup_Masque OK");
     end Test_Sup_Masque;

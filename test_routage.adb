@@ -65,6 +65,12 @@ procedure Test_Routage is
 
     end Test_Chercher_Route;
 
+    procedure test_Vider is
+    begin
+        Vider(Table_Routage);
+        Put_Line ("La table à bien était vidée");
+    end test_Vider;
+
 begin
 
     Put_Line("Test de la fonction Enregistrer :");
@@ -72,7 +78,8 @@ begin
     New_Line;
     Put_Line("Test de la fonction Chercher_Route :");
     Test_Chercher_Route;
-     
-    
+    New_Line;
+    Put_Line("Test de la fonction Vider :");
+    test_Vider;
 
 end Test_Routage;
