@@ -13,8 +13,6 @@ procedure Test_Cache_L is
     My_Cache : T_Cache;
     PaquetARouter, PaquetARouter1, PaquetARouter2, PaquetARouter3 : T_adresse_ip;
     Route1, Route2, Route3, Route4 : T_Route;
-   -- FIFO : String := "FIFO";
-   -- LFU : String := "LFU";
     Result : T_Route;
 
     
@@ -196,8 +194,8 @@ procedure Test_Cache_L is
         Put(To_UString_Base10(Result.Masque));
         Put(" ");
         Put_Line(Result.Port);
-        Initialiser(PaquetARouter3, 10, 0, 0, 55);
 
+        Initialiser(PaquetARouter3, 10, 0, 0, 55);
         Result := Chercher(My_Cache, PaquetARouter3);
         Mettre_a_jour(My_Cache, Result, "LFU"); 
         Put(To_UString_Base10(Result.Adresse));
