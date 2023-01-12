@@ -67,18 +67,29 @@ package body Cache_L is
         end if;
     end Ajouter_Fin;
 
-    procedure Augmenter_Frequence (Cache : in T_Cache; Route : in T_Route) is
+    function Augmenter_Frequence (Cache : in T_Cache; Route : in T_Route) return Integer is
     begin
-        if Cache /= null then
+       if Cache /= null then
             if Cache.All.Route = Route then
                 Cache.All.Frequence := Cache.All.Frequence + 1;
+                return Cache.All.Frequence;
             else
-                Augmenter_Frequence (Cache.Suivant, Route);
+                return Augmenter_Frequence (Cache.Suivant, Route);
             end if;
         else
             raise Route_Absente_Error;
         end if;
     end Augmenter_Frequence;
+
+    procedure Ordonner_Liste (Cache : in out T_Cache ; Route : in T_route; Frequence : in Integer) is
+    begin
+        if Cache /= null and then Cache.all.Frequence <= Frequence then
+            Supprimer (Cache, Route);
+            Cache := new T_Cellule'(Route, Frequence, cache);
+        else 
+            Ordonner_Liste (Cache.Suivant, Route, Frequence);
+        end if;
+    end;
 
     procedure Initialiser (Cache : out T_Cache; taille : in Integer) is 
     begin
@@ -107,14 +118,16 @@ package body Cache_L is
     end Chercher;
 
     procedure Mettre_a_jour (Cache : in out T_Cache; Route : in T_Route; politique : in String) is
+        Frequence : Integer;
     begin
         if politique = "LRU" then
             Supprimer (Cache, Route);
             Ajouter_Debut (Cache, Route);
 
         elsif politique = "LFU" then
-            Augmenter_Frequence (Cache, Route);
-
+            Frequence := Augmenter_Frequence (Cache, Route);
+            Put_Line(Frequence'Image);
+            Ordonner_Liste (Cache, Route, Frequence);
         else 
             Pragma Assert (politique = "FIFO");
             null;

@@ -123,7 +123,6 @@ procedure Routeur_LL is
     FD_Resultat : File_Type;
     FD_Paquet : File_Type;
 
-
     Paquet : T_adresse_ip;
     Route : T_Route;
     Commande : T_Commandes;
