@@ -39,6 +39,11 @@ procedure Test_Routage is
         Interface3 := To_Unbounded_String("Interface3");
         Enregistrer(Table_Routage, Destination3, Masque3, Interface3);
 
+        Initialiser(Destination1, 0, 0, 0, 0);
+        Initialiser(Masque1, 0, 0, 0, 0);
+        Interface1 := To_Unbounded_String("Interface4");
+        Enregistrer(Table_Routage, Destination1, Masque1, Interface1);
+
         Afficher_Table_Routage(Table_Routage);
 
 
@@ -76,8 +81,12 @@ begin
     Put_Line("Test de la fonction Enregistrer :");
     test_Enregistrer;
     New_Line;
+    Put_Line("------------------------------------------------------------------------");
+    New_Line;
     Put_Line("Test de la fonction Chercher_Route :");
     Test_Chercher_Route;
+    New_Line;
+    Put_Line("------------------------------------------------------------------------");
     New_Line;
     Put_Line("Test de la fonction Vider :");
     test_Vider;

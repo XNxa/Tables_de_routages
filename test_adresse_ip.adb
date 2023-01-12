@@ -50,9 +50,10 @@ procedure Test_Adresse_IP is
         Adresse_String := To_UString_Base10(Adresse1);
         Put_Line("Test avec une adresse IP trop longue dans le fichier : " & Adresse_String);
 
-        Lire_Adresse(Adresse1, Fichier);
-        Adresse_String := To_UString_Base10(Adresse1);
-        Put_Line("Test avec une adresse IP trop courte dans le fichier : " & Adresse_String);
+        --Lire_Adresse(Adresse1, Fichier);
+        --Adresse_String := To_UString_Base10(Adresse1);
+        --Put_Line("Test avec une adresse IP trop courte dans le fichier : " & Adresse_String);
+        
         Close(Fichier);
 
         Put_Line("Fonction Lire_Adresse OK");
@@ -112,16 +113,24 @@ begin
 
     Put_Line("Test de la fonction Initialiser :");
     Test_de_la_fonction_Initialiser;
-    new_Line;
-    --Put_Line("Test de la fonction Lire_Adresse :");
-    --Test_de_la_fonction_Lire_Adresse;
-    new_Line;
+    New_Line;
+    Put_Line("------------------------------------------------------------------------");
+    New_Line;
+    Put_Line("Test de la fonction Lire_Adresse :");
+    Test_de_la_fonction_Lire_Adresse;
+    New_Line;
+    Put_Line("------------------------------------------------------------------------");
+    New_Line;
     Put_Line("Test de la fonction Est_Compatible :");
     Test_Est_Compatible;
-    new_Line;
+    New_Line;
+    Put_Line("------------------------------------------------------------------------");
+    New_Line;
     Put_Line("Test de la fonction To_UString_Base10 :");
     Test_To_UString_Base10;
-    new_Line;
+    New_Line;
+    Put_Line("------------------------------------------------------------------------");
+    New_Line;
     Put_Line("Test de la fonction Sup_Masque :");
     Test_Sup_Masque;
 

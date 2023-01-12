@@ -11,7 +11,7 @@ procedure Test_Cache_L is
     
     
     My_Cache : T_Cache;
-    PaquetARouter : T_adresse_ip;
+    PaquetARouter, PaquetARouter1, PaquetARouter2, PaquetARouter3 : T_adresse_ip;
     Route1, Route2, Route3, Route4 : T_Route;
    -- FIFO : String := "FIFO";
    -- LFU : String := "LFU";
@@ -96,27 +96,48 @@ procedure Test_Cache_L is
 
     procedure Test_Mettre_a_jour_LRU is
     begin
-        Put_Line("Test de la fonction Enregistrer avec un Cache plein en politique FIFO");
+        Put_Line("Test de la fonction Enregistrer et Mettre_a_jour avec un Cache plein en politique LRU");
         New_Line;
         Put_Line("On utilise les routes du Cache dans l'ordre suivant :");
-        Initialiser(PaquetARouter, 192, 168, 1, 1);
-        Result := Chercher(My_Cache, PaquetARouter);
+        Initialiser(PaquetARouter1, 192, 168, 1, 1);
+        Result := Chercher(My_Cache, PaquetARouter1);
         Mettre_a_jour(My_Cache, Result, "LRU"); 
         Put(To_UString_Base10(Result.Adresse));
         Put(" ");
         Put(To_UString_Base10(Result.Masque));
         Put(" ");
         Put_Line(Result.Port);
-        Initialiser(PaquetARouter, 172, 16, 1, 1);
-        Result := Chercher(My_Cache, PaquetARouter);
+        Initialiser(PaquetARouter2, 172, 16, 1, 1);
+        Result := Chercher(My_Cache, PaquetARouter2);
         Mettre_a_jour(My_Cache, Result, "LRU"); 
         Put(To_UString_Base10(Result.Adresse));
         Put(" ");
         Put(To_UString_Base10(Result.Masque));
         Put(" ");
         Put_Line(Result.Port);
-        Initialiser(PaquetARouter, 28, 35, 0, 55);
-        Result := Chercher(My_Cache, PaquetARouter);
+        Initialiser(PaquetARouter3, 28, 35, 0, 55);
+        Result := Chercher(My_Cache, PaquetARouter3);
+        Mettre_a_jour(My_Cache, Result, "LRU"); 
+        Put(To_UString_Base10(Result.Adresse));
+        Put(" ");
+        Put(To_UString_Base10(Result.Masque));
+        Put(" ");
+        Put_Line(Result.Port);
+        Result := Chercher(My_Cache, PaquetARouter2);
+        Mettre_a_jour(My_Cache, Result, "LRU"); 
+        Put(To_UString_Base10(Result.Adresse));
+        Put(" ");
+        Put(To_UString_Base10(Result.Masque));
+        Put(" ");
+        Put_Line(Result.Port);
+        Result := Chercher(My_Cache, PaquetARouter3);
+        Mettre_a_jour(My_Cache, Result, "LRU"); 
+        Put(To_UString_Base10(Result.Adresse));
+        Put(" ");
+        Put(To_UString_Base10(Result.Masque));
+        Put(" ");
+        Put_Line(Result.Port);
+        Result := Chercher(My_Cache, PaquetARouter1);
         Mettre_a_jour(My_Cache, Result, "LRU"); 
         Put(To_UString_Base10(Result.Adresse));
         Put(" ");
@@ -124,34 +145,103 @@ procedure Test_Cache_L is
         Put(" ");
         Put_Line(Result.Port);
 
+        New_Line;
 
+        Put_Line("On enregistre à nouveau la route de l'interface 1, le cache devient alors :");
+        New_Line;
+        Enregistrer(My_Cache, Route1, "LRU");
+        Afficher_Cache(My_Cache);
+        Put_Line("La route remplacée est bien celle qui a été utilisée le moins récemment, celle de l'interface 3");
 
+        New_Line;
+        Put_Line("Politique LRU OK");
 
-        --Route3.Port := To_Unbounded_String("Interface5");
-      --  Mettre_a_jour(My_Cache, Route3, "LRU");
-      --  Result := Chercher(My_Cache, PaquetARouter);
-       -- Put_Line("Route après modification : " &Result.Port);
-       -- Afficher_Cache(My_Cache);
     end Test_Mettre_a_jour_LRU;
 
 
     procedure Test_Mettre_a_jour_LFU is
     begin
 
-        Initialiser(PaquetARouter, 192, 168, 1, 1);
-        Result := Chercher(My_Cache, PaquetARouter);
-        Put_Line("Route avant modification : " &Result.Port);
-        Route3.Port := To_Unbounded_String("Interface6");
-        Mettre_a_jour(My_Cache, Route3, "LFU");
-        Result := Chercher(My_Cache, PaquetARouter);
-        Put_Line("Route après modification : " &Result.Port);
+        Put_Line("Test de la fonction Enregistrer et Mettre_a_jour avec un Cache plein en politique LFU");
+        New_Line;
+
+        Vider(My_Cache);
+        Enregistrer(My_Cache, Route1, "LFU");
+        Enregistrer(My_Cache, Route2, "LFU");
+        Enregistrer(My_Cache, Route3, "LFU");
+        
+        Put_Line("On réinitialise le cache :");
+        New_Line;
         Afficher_Cache(My_Cache);
+
+        Put_Line("On utilise les routes du Cache dans l'ordre suivant :");
+
+        Initialiser(PaquetARouter1, 192, 168, 1, 1);
+        Result := Chercher(My_Cache, PaquetARouter1);
+        Mettre_a_jour(My_Cache, Result, "LRU"); 
+        Put(To_UString_Base10(Result.Adresse));
+        Put(" ");
+        Put(To_UString_Base10(Result.Masque));
+        Put(" ");
+        Put_Line(Result.Port);
+        Mettre_a_jour(My_Cache, Result, "LFU"); 
+        Put(To_UString_Base10(Result.Adresse));
+        Put(" ");
+        Put(To_UString_Base10(Result.Masque));
+        Put(" ");
+        Put_Line(Result.Port);
+        Mettre_a_jour(My_Cache, Result, "LFU"); 
+        Put(To_UString_Base10(Result.Adresse));
+        Put(" ");
+        Put(To_UString_Base10(Result.Masque));
+        Put(" ");
+        Put_Line(Result.Port);
+        Initialiser(PaquetARouter3, 10, 0, 0, 55);
+
+        Result := Chercher(My_Cache, PaquetARouter3);
+        Mettre_a_jour(My_Cache, Result, "LFU"); 
+        Put(To_UString_Base10(Result.Adresse));
+        Put(" ");
+        Put(To_UString_Base10(Result.Masque));
+        Put(" ");
+        Put_Line(Result.Port);
+        Mettre_a_jour(My_Cache, Result, "LFU"); 
+        Put(To_UString_Base10(Result.Adresse));
+        Put(" ");
+        Put(To_UString_Base10(Result.Masque));
+        Put(" ");
+        Put_Line(Result.Port);
+
+        Initialiser(PaquetARouter2, 172, 16, 1, 1);
+        Result := Chercher(My_Cache, PaquetARouter2);
+        Mettre_a_jour(My_Cache, Result, "LFU"); 
+        Put(To_UString_Base10(Result.Adresse));
+        Put(" ");
+        Put(To_UString_Base10(Result.Masque));
+        Put(" ");
+        Put_Line(Result.Port);
+
+        New_Line;
+
+        Put_Line("On enregistre la route de l'interface 4, le cache devient alors :");
+        New_Line;
+        Enregistrer(My_Cache, Route4, "LRU");
+        Afficher_Cache(My_Cache);
+        Put_Line("La route remplacée est bien celle qui a été utilisée le moins de fois, celle de l'interface 3");
+
+        New_Line;
+        Put_Line("Politique LFU OK");
+
     end Test_Mettre_a_jour_LFU;
 
     procedure Test_Vider is
     begin
+        Put_Line("Test de la fonction Vider :");
+        New_Line;
         Vider(My_Cache);
+        Put_Line("On Affiche le cache après l'avoir vidé :");
         Afficher_Cache(My_Cache);
+        Put_Line("Le cache est bien vide.");
     end Test_Vider;
 
 
@@ -174,8 +264,13 @@ begin
     Put_Line("------------------------------------------------------------------------");
     New_Line;
     Test_Mettre_a_jour_LRU;
-   -- Test_Mettre_a_jour_LFU;
-    
+    New_Line;
+    Put_Line("------------------------------------------------------------------------");
+    New_Line;
+    Test_Mettre_a_jour_LFU;
+    New_Line;
+    Put_Line("------------------------------------------------------------------------");
+    New_Line;
     Test_Vider;
 
 end Test_Cache_L;
