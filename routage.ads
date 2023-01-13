@@ -6,11 +6,17 @@ package Routage is
 
 	type T_Table_Routage is limited private;
 
+	-- procedure Initialiser
 	-- Initialiser une liste chainée vide
+	-- Paramètre :
+		-- Table_Routage : out T_Table_Routage
     procedure Initialiser (Table_Routage : out T_Table_Routage);
 		
-
+	-- procedure Enregistrer
 	-- Ajouter une nouvelle cellule dans la liste chainée
+	-- Paramètres :
+		-- Table_Routage : in out T_Table_Routage
+		-- Route : T_Route
     procedure Enregistrer (Table_Routage : in out T_Table_Routage ; Route : T_Route);
 
 
