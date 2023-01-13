@@ -7,13 +7,11 @@ package Routage is
 	type T_Table_Routage is limited private;
 
 	-- Initialiser une liste chainée vide
-    procedure Initialiser (Table_Routage : out T_Table_Routage) with
-		Post => Table_Routage = null;
+    procedure Initialiser (Table_Routage : out T_Table_Routage);
 		
 
 	-- Ajouter une nouvelle cellule dans la liste chainée
-    procedure Enregistrer (Table_Routage : in out T_Table_Routage ; Route : T_Route) with
-		Post => Chercher_Route(Table_Routage, Route.Adresse) = Route;
+    procedure Enregistrer (Table_Routage : in out T_Table_Routage ; Route : T_Route);
 
 
 	-- Chercher si une adresse correspond à une route dans la table de routage
@@ -25,8 +23,7 @@ package Routage is
 	procedure Afficher_Table_Routage (Table_Routage : in T_Table_Routage);
 
 	-- Permet de vider la liste Chainée
-    procedure Vider (Table_Routage : in out T_Table_Routage) with 
-		Post => Table_Routage = null;
+    procedure Vider (Table_Routage : in out T_Table_Routage);
 
 
 private

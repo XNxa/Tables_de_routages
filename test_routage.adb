@@ -53,24 +53,29 @@ procedure Test_Routage is
         Initialiser(PaquetARouter, 10, 0, 0, 1);
         Route := Chercher_Route(Table_Routage, PaquetARouter);
         Put_Line("Route trouvée pour l'adresse 10.0.0.1 : " &Route.Port );
+        pragma Assert (Route.Port = "Interface1" );
 
         Initialiser(PaquetARouter,  192, 168, 1, 1);
         Route := Chercher_Route(Table_Routage, PaquetARouter);
         Put_Line("Route trouvée pour l'adresse 192.168.1.1 : " &Route.Port );
+        pragma Assert (Route.Port = "Interface2" );
 
         Initialiser(PaquetARouter, 172, 16, 1, 1);
         Route := Chercher_Route(Table_Routage, PaquetARouter);
         Put_Line("Route trouvée pour l'adresse 172.16.1.1 : " &Route.Port );
+        pragma Assert (Route.Port = "Interface3" );
 
         Initialiser(PaquetARouter, 100, 0, 0, 1);
         Route := Chercher_Route(Table_Routage, PaquetARouter);
         Put_Line("Route trouvée pour l'adresse 100.0.0.1 : " &Route.Port );
+        pragma Assert (Route.Port = "Interface4" );
 
     end Test_Chercher_Route;
 
     procedure test_Vider is
     begin
         Vider(Table_Routage);
+        Afficher_Table_Routage(Table_Routage);
         Put_Line ("La table à bien était vidée");
     end test_Vider;
 
