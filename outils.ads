@@ -12,8 +12,9 @@ package Outils is
                                   -- d'un cache en liste chainée quand celui-ci est vide
     Politique_Non_Supportee_Error : Exception; -- Exception levée quand l'utilisateur utilise une politique 
                                                -- autre que LRU avec un cache en arbre binaire
-    Table_invalide_erreur : Exception;
-    
+    Table_invalide_erreur : Exception; -- Exception levée quand la table de routage utilisée
+                                       -- n'a pas le bon format
+
     type T_route is record
         Adresse : T_adresse_IP;
         Masque : T_adresse_IP;
