@@ -133,7 +133,6 @@ package body Cache_L is
 
         elsif politique = "LFU" then
             Frequence := Augmenter_Frequence (Cache, Route);
-            Put_Line(Frequence'Image);
             Ordonner_Liste (Cache, Route, Frequence);
         else 
             Pragma Assert (politique = "FIFO");

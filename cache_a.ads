@@ -1,6 +1,5 @@
 with Adresse_IP; use Adresse_IP;
 with Outils; use Outils;
-with Ada.Text_IO; use Ada.Text_IO;
 
 package Cache_a is
 
