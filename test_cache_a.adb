@@ -7,7 +7,7 @@ with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
 with Ada.Text_IO.Unbounded_IO; use Ada.Text_IO.Unbounded_IO;
 with Cache_a; use Cache_a;
 
-procedure Test_Cache_L is
+procedure Test_Cache_A is
     
     
     My_Cache : T_Cache;
@@ -173,4 +173,4 @@ begin
     New_Line;
     Test_Vider;
 
-end Test_Cache_L;
+end Test_Cache_A;
