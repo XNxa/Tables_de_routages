@@ -7,6 +7,7 @@ package Outils is
     Option_Erreur : exception; -- Exception levée quand l'utilisateur utilise mal les options
     Route_Absente_Error : Exception;
     Cache_vide_Error : Exception;
+    Politique_Non_Supportee_Error : Exception;
 
     type T_route is record
         Adresse : T_adresse_IP;
@@ -30,6 +31,8 @@ package Outils is
 	-- en Unbounded_String.
 	function "+" (Item : in String) return Unbounded_String
 		renames To_Unbounded_String;
+
+    procedure Afficher_Route(Route : in T_route);
 
 
 end Outils;

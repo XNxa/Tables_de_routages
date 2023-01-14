@@ -28,6 +28,9 @@ package Adresse_IP is
     -- Permet d'obtenir un masque adapté a une adresse
     function Adapter_Masque (Paquet : in T_adresse_ip) return T_adresse_ip;
 
+    -- Obtenir le n-ieme bit d'une adresse
+    function Valeur_Bit (Adresse : in T_adresse_ip; N : in Integer) return Boolean;
+
     -- Permet de avoir si le membre de gauche est superieur ou égal au membre de droite
     function Sup_Masque (Left : T_adresse_ip; Right : T_adresse_ip) return Boolean;
 

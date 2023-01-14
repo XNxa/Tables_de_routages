@@ -40,4 +40,14 @@ package body Outils is
         end if;
     end Lire_Commande;
 
+    procedure Afficher_Route(Route : in T_route) is
+    begin
+        Put(To_UString_Base10(Route.Adresse));
+        Put(" ");
+        Put(To_UString_Base10(Route.Masque));
+        Put(" ");
+        Put(Route.Port);
+        New_Line;
+    end Afficher_Route;
+
 end Outils;
