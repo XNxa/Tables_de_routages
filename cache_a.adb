@@ -20,7 +20,10 @@ package body Cache_a is
         
     end Initialiser;
 
+    -- procédure récursive qui permet d'ajouter une route à l'arbre
     procedure Ajouter (Cache : in out T_Cache ; Route : in T_Route) is
+        -- procedure récursive bis qui fait l'action de la procédure initiale mais en ajoutant un index en paramètre
+        -- ainsi il est possible d'avoir un index dans le corps de cette fonction récursive
         procedure Ajouter_b (Cache : in out T_Cache ; Route : in T_Route ; index : in Integer) is
         begin
             if Valeur_Bit(Route.Adresse, index) then
@@ -51,7 +54,11 @@ package body Cache_a is
         Ajouter_b(Cache, Route, 1);
     end Ajouter;
 
+
+    -- procédure récursive qui permet de supprimer une route de l'arbre
     procedure Supprimer (Cache : in out T_Cache ; Route : in T_Route) is
+        -- procedure récursive bis qui fait l'action de la procédure initiale mais en ajoutant un index en paramètre
+        -- ainsi il est possible d'avoir un index dans le corps de cette fonction récursive
         procedure Supprimer_b (Cache : in out T_Cache ; Route : in T_Route ; index : in Integer) is
             A_detruire : T_Cache;
         begin
@@ -98,6 +105,8 @@ package body Cache_a is
     end Supprimer;
 
     function Chercher (Cache : in T_Cache; PaquetARouter : in T_Adresse_IP) return T_Route is
+        -- procedure récursive bis qui fait l'action de la procédure initiale mais en ajoutant un index en paramètre
+        -- ainsi il est possible d'avoir un index dans le corps de cette fonction récursive
         function Chercher_b (Cache : in T_Cache; PaquetARouter : in T_Adresse_IP; index : in Integer) return T_Route is
         begin
             if Cache.All.estNoeud then
@@ -161,6 +170,9 @@ package body Cache_a is
     end Enregistrer;
 
     procedure Afficher_Cache (Cache : in T_Cache) is
+        -- procedure bis qui affiche le cache
+        -- son existence permet décrire la ligne "Cache : " et de sauter une ligne dans le même sous programme
+        -- et de ne pas l'écrire dans le corps du programme
         procedure Afficher_Cache_b (Cache : in T_Cache) is
         begin
             if Cache /= null then

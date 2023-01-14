@@ -5,22 +5,62 @@ package Cache_a is
 
     type T_Cache is limited private;
 
-    -- Initialiser la liste arbre binaire vide representant le cache
-    procedure Initialiser (Cache : out T_Cache; taille : in Integer);
+    -- procedure Initialiser
+    -- Initialise la liste arbre binaire vide representant le cache
+    -- paramètres :
+        -- Cache : out T_Cache
+        -- taille : in Integer
+    -- Pre-condition :
+        -- taille > 0
+    procedure Initialiser (Cache : out T_Cache; taille : in Integer) with
+        Pre => taille > 0;
 
-    -- Chercher une adresse dans le cache
+
+    -- function Chercher
+    -- Chercher une adresse dans le cache si elle y est, sinon renvoyer une route nulle
+    -- Paramètres :
+        -- Cache : in T_Cache
+        -- PaquetARouter : in T_Adresse_IP
     function Chercher (Cache : in T_Cache; PaquetARouter : in T_Adresse_IP) return T_Route;
 
-    -- Mettre a jour le cache
-    procedure Mettre_a_jour (Cache : in out T_Cache; Route : in T_Route ; politique : in String);
 
-    -- Enregistrer une nouvelle adresse dans le cache
-    procedure Enregistrer (Cache : in out T_Cache; Route : in T_Route ; politique : in String);
+    -- procedure Mettre_a_jour
+    -- Place en première position la route utilisée dans un tableau qui enregistre l'ordre d'utilisation
+    -- des routes
+    -- paramètres :
+        -- Cache : in out T_Cache
+        -- Route : in T_Route
+        -- politique : in String
+    -- Pre-condition :
+        -- politique = +"LRU"
+    procedure Mettre_a_jour (Cache : in out T_Cache; Route : in T_Route ; politique : in String) with
+        pre => politique = +"LRU";
 
+
+    -- procedure Enregistrer
+    -- Supprimer un élément du cache s'il est plein et une nouvelle adresse dans le 
+    -- cache en accord avec la politique LRU
+    -- Paramètres :
+        -- Cache : in out T_Cache
+        -- Route : in T_Route
+        -- politique : in String
+     -- Pre-condition :
+        -- politique == +"LRU"
+    procedure Enregistrer (Cache : in out T_Cache; Route : in T_Route ; politique : in String) with
+        pre => politique = +"LRU";
+
+
+    -- procedure Afficher_Cache
     -- Afficher le cache
+    -- Paramètre :
+        -- Cache : in T_Cache
     procedure Afficher_Cache (Cache : in T_Cache);
 
-    -- Vider le cache de toutes les lignes
+
+    -- procedure Vider
+    -- Vider le cache de toutes les adresses
+    -- Paramètre :
+        -- Cache : in T_Cache
     procedure Vider (Cache : in out T_Cache);
 
 private
