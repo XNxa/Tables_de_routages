@@ -1,4 +1,5 @@
 with Ada.Unchecked_Deallocation;
+with Ada.Text_IO; use Ada.Text_IO;
 
 package body Cache_a is
 
