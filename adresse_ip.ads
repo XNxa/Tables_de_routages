@@ -59,9 +59,6 @@ package Adresse_IP is
     -- Obtenir le n-ieme bit d'une adresse
     function Valeur_Bit (Adresse : in T_adresse_ip; N : in Integer) return Boolean;
 
-    -- Obtenir le n-ieme bit d'une adresse
-    function Valeur_Bit (Adresse : in T_adresse_ip; N : in Integer) return Boolean;
-
     -- function Sup_Masque
     -- Permet de avoir si le membre de gauche est superieur ou égal au membre de droite
     -- Paramètres :
