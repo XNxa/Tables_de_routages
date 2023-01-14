@@ -8,12 +8,6 @@ package Cache_a is
     -- Initialiser la liste arbre binaire vide representant le cache
     procedure Initialiser (Cache : out T_Cache; taille : in Integer);
 
-    -- A Enlever
-    procedure Ajouter (Cache : in out T_Cache ; Route : in T_Route);
-    
-    procedure Supprimer (Cache : in out T_Cache ; Route : in T_Route);
-    -- A Enlever
-
     -- Chercher une adresse dans le cache
     function Chercher (Cache : in T_Cache; PaquetARouter : in T_Adresse_IP) return T_Route;
 
