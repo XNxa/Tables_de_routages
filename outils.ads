@@ -23,17 +23,23 @@ package Outils is
 
     type T_Commandes is (C_table, C_cache, C_stat, C_fin);
 
+
+    -- Xavier
     -- procedure Afficher_Utilisation
     -- Permet de rappeller l'utilisation des options
     -- Cette procédure est appelée lorsque l'exception Option_Erreur est lévée
     procedure Afficher_Utilisation;
 
+
+    -- Xavier
     -- procedure Afficher_Erreur
     -- Permet d'afficher un message d'erreur et lève Option_Erreur
     -- paramètre :
         -- Message : in String
     procedure Afficher_Erreur (Message : in String);
 
+
+    -- Xavier
     -- procedure Lire_Commande
     -- Lit les commandes dans le fichier Paquet
     -- paramètres :
@@ -41,11 +47,14 @@ package Outils is
         -- Commande : out T_Commandes
     procedure Lire_Commande (Fichier : in File_Type ; Commande : out T_Commandes);
 
+
     -- Surcharge l'opérateur unaire "+" pour convertir une String
 	-- en Unbounded_String.
 	function "+" (Item : in String) return Unbounded_String
 		renames To_Unbounded_String;
 
+
+    -- Yanis
     -- procedure Afficher_Route
     -- Permet d'afficher une route (adresse, masque, interface)
     -- paramètre :

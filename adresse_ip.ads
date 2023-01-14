@@ -42,6 +42,7 @@ package Adresse_IP is
     function To_UString_Base10 (Adresse : in T_adresse_ip) return Unbounded_String;
 
 
+    -- Yanis
     -- function Est_Compatible
     -- Permet de comparer si une adresse à laquelle on applique un masque est compatible avec une destination
     -- Renvoie True si c'est compatible et False Sinon
@@ -53,12 +54,15 @@ package Adresse_IP is
              Destination : in T_adresse_ip) return Boolean;
 
 
+    -- Xavier
     -- function Adapter_Masque
     -- Permet d'obtenir un masque adapté à une adresse
     -- Paramètre :
         -- Paquet : in T_adresse_ip
     function Adapter_Masque (Paquet : in T_adresse_ip) return T_adresse_ip;
 
+    
+    -- Xavier
     -- function Valeur_Bit
     -- Obtenir le n-ieme bit d'une adresse ip
     -- Paramètres :
@@ -66,6 +70,8 @@ package Adresse_IP is
         -- N : in Integer
     function Valeur_Bit (Adresse : in T_adresse_ip; N : in Integer) return Boolean;
 
+
+    -- Xavier
     -- function Sup_Masque
     -- Permet de avoir si le membre de gauche est superieur ou égal au membre de droite
     -- Paramètres :
