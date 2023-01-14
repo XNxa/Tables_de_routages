@@ -56,7 +56,11 @@ package Adresse_IP is
         -- Paquet : in T_adresse_ip
     function Adapter_Masque (Paquet : in T_adresse_ip) return T_adresse_ip;
 
+    -- function Valeur_Bit
     -- Obtenir le n-ieme bit d'une adresse
+    -- Paramètres :
+        -- Adresse : in T_adresse_ip
+        -- N : in Integer
     function Valeur_Bit (Adresse : in T_adresse_ip; N : in Integer) return Boolean;
 
     -- function Sup_Masque
