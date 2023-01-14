@@ -86,10 +86,9 @@ package body Adresse_IP is
         return Masque;
     end Adapter_Masque;
 
-    function Valeur_Bit (Adresse : in T_adresse_ip; N : in Integer) return Boolean is
-        Adbis : T_adresse_ip := Adresse;
+    function Valeur_Bit (Adresse : in T_adresse_ip; N : in Integer) return Boolean is        
     begin
-        return ((Adbis * 2**(N-1)) and POIDS_FORT) /= 0;
+        return ((Adresse * 2**(N-1)) and POIDS_FORT) /= 0;
     end Valeur_Bit;
 
     function Sup_Masque (Left : T_adresse_ip; Right : T_adresse_ip) return Boolean is

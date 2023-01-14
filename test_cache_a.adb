@@ -2,8 +2,6 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Adresse_IP; use Adresse_IP;
 with Outils; use Outils;
-with Ada.Strings.Fixed; use Ada.Strings.Fixed;
-with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
 with Ada.Text_IO.Unbounded_IO; use Ada.Text_IO.Unbounded_IO;
 with Cache_a; use Cache_a;
 

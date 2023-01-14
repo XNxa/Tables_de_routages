@@ -1,5 +1,4 @@
 with Adresse_IP; use Adresse_IP;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Outils; use Outils;
 
 package Routage is

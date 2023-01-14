@@ -3,20 +3,17 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Routage; use Routage;
 with Adresse_IP; use Adresse_IP;
 with outils ; use outils ;
-with Ada.Strings.Fixed; use Ada.Strings.Fixed;
-with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
 with Ada.Text_IO.Unbounded_IO; use Ada.Text_IO.Unbounded_IO;
 
 procedure Test_Routage is
     
     Table_Routage : T_Table_Routage;
     PaquetARouter : T_adresse_ip;
-    Interface1, Interface2, Interface3, InterfaceRoute ,Adresse_a_retourner: Unbounded_String;
     Route,Route1, Route2, Route3, Route4 : T_Route;
 
     procedure Initialisation_table_routage is
     begin
-        Initialiser(Table_Routage);
+        Initialiser(Table_Routage);        
     end Initialisation_table_routage;
 
     procedure test_Enregistrer is
@@ -80,7 +77,7 @@ procedure Test_Routage is
     end test_Vider;
 
 begin
-
+    Initialisation_table_routage;
     Put_Line("Test de la fonction Enregistrer :");
     test_Enregistrer;
     New_Line;
