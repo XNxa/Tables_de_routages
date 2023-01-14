@@ -7,7 +7,8 @@ package Adresse_IP is
 
     type T_adresse_ip is private;
 
-
+    
+    -- Yanis
     -- procedure Initialiser
     -- Permet d'initaliser une adresse dans le type T_adresse_ip à partir des valeurs entières de chaque octet
     -- Paramètres :
@@ -23,7 +24,8 @@ package Adresse_IP is
         Pre => 0 <= Octet1 and Octet1 <= 255 and 0 <= Octet2 and Octet2 <= 255 
         and 0 <= Octet3 and Octet3 <= 255 and 0 <= Octet4 and Octet4 <= 255;
 
-
+    
+    -- Yanis
     -- procedure Lire_Adresse
     -- Permet de lire une adresse dans un fichier et de l'initialiser dans le type T_adresse_ip
     -- Paramètres :
@@ -32,6 +34,7 @@ package Adresse_IP is
     procedure Lire_Adresse (Adresse : out T_adresse_ip ; Fichier : in out File_Type);
 
 
+    -- Xavier
     -- function To_UString_Base10
     -- Permet d'obtenir une Unbounded_String correspondant à une adresse ip
     -- Paramètre :
