@@ -1,4 +1,5 @@
 with Ada.Command_Line; use Ada.Command_Line;
+with Ada.IO_EXCEPTIONS;
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Strings; use Ada.Strings;
 with Ada.Text_IO.Unbounded_IO;  use Ada.Text_IO.Unbounded_IO;
@@ -219,6 +220,8 @@ begin
     Vider(Cache);
 
     exception
+        when ADA.IO_Exceptions.NAME_ERROR =>
+            Put("Erreur : Fichier introuvable");
         when Option_Erreur =>
             Afficher_Utilisation;
 end Routeur_LL;
