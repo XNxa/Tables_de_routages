@@ -2,6 +2,8 @@ with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Strings; use Ada.Strings;
 with Ada.Text_IO.Unbounded_IO;  use Ada.Text_IO.Unbounded_IO;
+with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
+with Ada.Float_Text_IO; use Ada.Float_Text_IO;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Adresse_IP; use Adresse_IP;
 with Routage; use Routage;
@@ -107,6 +109,21 @@ procedure Routeur_LA is
         New_Line(Fichier);
     end Enregister_Resultat;
 
+    procedure Afficher_Stats (CompteurDefaultCache : in Integer ; CompteurDemandeRoute : in Integer) is
+    begin
+        Put("Nombre de paquets traités : ");
+        Put(CompteurDemandeRoute, 1);
+        New_Line;
+        Put("Nombre de paquets absents dans le cache : ");
+        Put(CompteurDefaultCache, 1);
+        New_Line;
+        Put("Taux de paquets absents dans le cache : ");
+        Put(CompteurDefaultCache * 100 / CompteurDemandeRoute, 1);
+        Put("%");
+        New_Line;
+        New_Line;
+    end Afficher_Stats;
+
     -- Valeur par défault des options
     taille_cache : Integer := 10;
     politique : Unbounded_String := +"LRU";
@@ -126,6 +143,9 @@ procedure Routeur_LA is
     Paquet : T_adresse_ip;
     Route : T_Route;
     Commande : T_Commandes;
+
+    CompteurDefaultCache : Integer := 0;
+    CompteurDemandeRoute : Integer := 0;
 
 begin
     -- Initialiser les options à partir des arguments en ligne de commande
@@ -150,8 +170,10 @@ begin
 
         -- Chercher la route associée au paquet
         Route := Chercher (Cache, Paquet);
+        CompteurDemandeRoute := CompteurDemandeRoute + 1;
 
-        if Route.Port = +"null" then 
+        if Route.Port = +"null" then
+            CompteurDefaultCache := CompteurDefaultCache + 1;
             Route := Chercher_Route (Table_Routage, Paquet);
             Enregistrer (Cache, Route, To_String(politique));
         else
@@ -170,8 +192,7 @@ begin
                 when C_cache =>
                     Afficher_Cache (Cache);
                 when C_stat =>
-                    null;
-                    -- Afficher_Stat (Cache);
+                    Afficher_Stats (CompteurDefaultCache, CompteurDemandeRoute);
                 when C_fin =>
                     exit;
             end case;
@@ -185,6 +206,10 @@ begin
     end;
     Close(FD_Paquet);
     Close(FD_Resultat);
+
+    if afficher_stat then
+        Afficher_Stats (CompteurDefaultCache, CompteurDemandeRoute);
+    end if;
 
     -- Vider la table de routage et le cache à la fin de leurs utilisations    
     Vider(Table_Routage);
