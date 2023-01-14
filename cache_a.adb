@@ -131,7 +131,6 @@ package body Cache_a is
                 if Ordre.Tab(i) = Route then
                     Ordre.Tab(i) := Ordre.Tab(Ordre.TailleEffective);
                     Ordre.Tab(Ordre.TailleEffective) := Route;
-                    return;
                 end if;
             end loop;
         else
