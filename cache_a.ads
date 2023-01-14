@@ -6,6 +6,7 @@ package Cache_a is
 
     type T_Cache is limited private;
 
+    -- Xavier
     -- procedure Initialiser
     -- Initialise la liste arbre binaire vide representant le cache
     -- paramètres :
@@ -16,7 +17,7 @@ package Cache_a is
     procedure Initialiser (Cache : out T_Cache; taille : in Integer) with
         Pre => taille > 0;
 
-
+    -- Xavier
     -- function Chercher
     -- Chercher une adresse dans le cache si elle y est, sinon renvoyer une route nulle
     -- Paramètres :
@@ -24,7 +25,7 @@ package Cache_a is
         -- PaquetARouter : in T_Adresse_IP
     function Chercher (Cache : in T_Cache; PaquetARouter : in T_Adresse_IP) return T_Route;
 
-
+    -- Xavier
     -- procedure Mettre_a_jour
     -- Place en première position la route utilisée dans un tableau qui enregistre l'ordre d'utilisation
     -- des routes
@@ -37,7 +38,7 @@ package Cache_a is
     procedure Mettre_a_jour (Cache : in out T_Cache; Route : in T_Route ; politique : in String) with
         pre => politique = +"LRU";
 
-
+    -- Xavier
     -- procedure Enregistrer
     -- Supprimer un élément du cache s'il est plein et une nouvelle adresse dans le 
     -- cache en accord avec la politique LRU
@@ -50,14 +51,14 @@ package Cache_a is
     procedure Enregistrer (Cache : in out T_Cache; Route : in T_Route ; politique : in String) with
         pre => politique = +"LRU";
 
-
+    -- Yanis
     -- procedure Afficher_Cache
     -- Afficher le cache
     -- Paramètre :
         -- Cache : in T_Cache
     procedure Afficher_Cache (Cache : in T_Cache);
 
-
+    -- Xavier
     -- procedure Vider
     -- Vider le cache de toutes les adresses
     -- Paramètre :
