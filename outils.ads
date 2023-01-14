@@ -8,6 +8,7 @@ package Outils is
     Route_Absente_Error : Exception;
     Cache_vide_Error : Exception;
     Politique_Non_Supportee_Error : Exception;
+    Table_invalide_erreur : Exception;
 
     type T_route is record
         Adresse : T_adresse_IP;

@@ -32,6 +32,7 @@ package body Routage is
         end loop;
             RouteARetourner.Masque := Adresse_IP.Adapter_Masque(PaquetARouter);
         return RouteARetourner;
+        exception when others => raise Table_invalide_erreur;
     end Chercher_Route;
 
     procedure Afficher_Table_Routage (Table_Routage : in T_Table_Routage) is
