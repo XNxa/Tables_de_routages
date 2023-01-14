@@ -174,7 +174,7 @@ procedure Test_Cache_L is
 
         Initialiser(PaquetARouter1, 192, 168, 1, 1);
         Result := Chercher(My_Cache, PaquetARouter1);
-        Mettre_a_jour(My_Cache, Result, "LRU"); 
+        Mettre_a_jour(My_Cache, Result, "LFU"); 
         Put(To_UString_Base10(Result.Adresse));
         Put(" ");
         Put(To_UString_Base10(Result.Masque));
@@ -221,7 +221,7 @@ procedure Test_Cache_L is
 
         Put_Line("On enregistre la route de l'interface 4, le cache devient alors :");
         New_Line;
-        Enregistrer(My_Cache, Route4, "LRU");
+        Enregistrer(My_Cache, Route4, "LFU");
         Afficher_Cache(My_Cache);
         Put_Line("La route remplacée est bien celle qui a été utilisée le moins de fois, celle de l'interface 3");
 
