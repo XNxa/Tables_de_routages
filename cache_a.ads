@@ -1,5 +1,6 @@
 with Adresse_IP; use Adresse_IP;
 with Outils; use Outils;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 package Cache_a is
 
