@@ -6,7 +6,7 @@ package Cache_L is
 
     type T_Cache is limited private;
 
-
+    -- Xavier
     -- procedure Initialiser
     -- Initialiser la liste chainée vide representant le cache avec un cache de la taille voulue
     -- Paramètres :
@@ -17,7 +17,7 @@ package Cache_L is
     procedure Initialiser (Cache : out T_Cache; taille : in Integer) with
         Pre => taille > 0;
 
-
+    -- Xavier
     -- function Chercher
     -- Chercher une adresse dans le cache si elle y est, sinon renvoyer une route nulle
     -- Paramètres :
@@ -25,7 +25,7 @@ package Cache_L is
         -- PaquetARouter : in T_Adresse_IP
     function Chercher (Cache : in T_Cache; PaquetARouter : in T_Adresse_IP) return T_Route;
 
-
+    -- Gaetan
     -- procedure Mettre_a_jour
     -- Mettre à jour le cache en accord avec la politique
     -- Paramètres :
@@ -38,6 +38,7 @@ package Cache_L is
         pre => politique = +"FIFO" or politique = +"LRU" or politique = +"LFU";
 
 
+    -- Gaetan
     -- procedure Enregistrer
     -- Supprimer un élément du cache s'il est plein et une nouvelle adresse dans le cache en accord avec la politique
     -- Paramètres :
@@ -49,14 +50,14 @@ package Cache_L is
     procedure Enregistrer (Cache : in out T_Cache; Route : in T_Route ; politique : in String) with
         pre => politique = +"FIFO" or politique = +"LRU" or politique = +"LFU";
 
-    
+    -- Yanis
     -- procedure Afficher_Cache
     -- Afficher le cache
     -- Paramètre :
         -- Cache : in T_Cache
     procedure Afficher_Cache (Cache : in T_Cache);
 
-
+    -- Yanis
     -- procedure Vider
     -- Vider le cache de toutes les adresses
     -- Paramètre :
