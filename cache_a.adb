@@ -58,11 +58,11 @@ package body Cache_a is
                 if Cache.All.Droite /= null then
                     if Cache.All.Droite.All.estNoeud then
                         Supprimer_b(Cache.All.Droite, Route, index + 1);
-                        if Cache.All.Droite.All.Droite /= null and then ((not Cache.All.Droite.All.estNoeud) and Cache.All.Droite.All.Gauche = null) then
+                        if Cache.All.Droite.All.Droite /= null and then ((not Cache.All.Droite.All.Droite.All.estNoeud) and Cache.All.Droite.All.Gauche = null) then
                             A_detruire := Cache.All.Droite;
                             Cache.all.Droite := Cache.All.Droite.All.Droite;
                             Free(A_detruire);
-                        elsif Cache.All.Droite.All.Gauche /= null and then ((not Cache.All.Droite.All.estNoeud) and Cache.All.Droite.All.Droite = null) then
+                        elsif Cache.All.Droite.All.Gauche /= null and then ((not Cache.All.Droite.all.Gauche.All.estNoeud) and Cache.All.Droite.All.Droite = null) then
                             A_detruire := Cache.All.Droite;
                             Cache.all.Droite := Cache.All.Droite.All.Gauche;
                             Free(A_detruire);
@@ -76,11 +76,11 @@ package body Cache_a is
                 if Cache.All.Gauche /= null then
                     if Cache.All.Gauche.All.estNoeud then
                         Supprimer_b(Cache.All.Gauche, Route, index + 1);
-                        if Cache.All.Gauche.All.Droite /= null and then ((not Cache.All.Gauche.All.estNoeud) and Cache.All.Gauche.All.Gauche = null) then
+                        if Cache.All.Gauche.All.Droite /= null and then ((not Cache.All.Gauche.All.Droite.All.estNoeud) and Cache.All.Gauche.All.Gauche = null) then
                             A_detruire := Cache.All.Gauche;
                             Cache.all.Gauche := Cache.All.Gauche.All.Droite;
                             Free(A_detruire);
-                        elsif Cache.All.Gauche.All.Gauche /= null and then ((not Cache.All.Gauche.All.estNoeud) and Cache.All.Gauche.All.Droite = null) then
+                        elsif Cache.All.Gauche.All.Gauche /= null and then ((not Cache.All.Gauche.All.Gauche.All.estNoeud) and Cache.All.Gauche.All.Droite = null) then
                             A_detruire := Cache.All.Gauche;
                             Cache.all.Gauche := Cache.All.Gauche.All.Gauche;
                             Free(A_detruire);
@@ -163,18 +163,16 @@ package body Cache_a is
     procedure Afficher_Cache (Cache : in T_Cache) is
         procedure Afficher_Cache_b (Cache : in T_Cache) is
         begin
-            if not Cache.All.estNoeud then
-                Afficher_Route(Cache.All.Route);
-            else
-                if Cache.All.Droite /= null then
-                    Put_Line("Droite : ");
-                    Afficher_Cache_b(Cache.All.Droite);
-                    Put_Line("Haut : ");
-                end if;
-                if Cache.All.Gauche /= null then
-                    Put_Line("Gauche : ");
-                    Afficher_Cache_b(Cache.All.Gauche);
-                    Put_Line("Haut : ");
+            if Cache /= null then
+                if not Cache.All.estNoeud then
+                    Afficher_Route(Cache.All.Route);
+                else
+                    if Cache.All.Droite /= null then
+                        Afficher_Cache_b(Cache.All.Droite);
+                    end if;
+                    if Cache.All.Gauche /= null then
+                        Afficher_Cache_b(Cache.All.Gauche);
+                    end if;
                 end if;
             end if;
         end Afficher_Cache_b;
