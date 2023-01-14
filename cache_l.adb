@@ -8,6 +8,7 @@ package body Cache_L is
     procedure Free is
         new Ada.Unchecked_Deallocation(Object => T_Cellule, Name => T_Cache);
 
+    -- Renvoyer True si le cache est plein et False sinon
     function Cache_plein (Cache : in T_Cache) return Boolean is
         Cache_aux : T_Cache := Cache;
         i : Integer := 0;
@@ -19,6 +20,7 @@ package body Cache_L is
         return (i = Taille_du_Cache);
     end Cache_plein;
 
+    -- Supprimer une route dans le cache si elle y est présente
     procedure Supprimer (Cache : in out T_Cache; Route : in T_Route) is
         A_detruire : T_Cache;
     begin
@@ -35,6 +37,7 @@ package body Cache_L is
         end if;
     end Supprimer;
 
+    -- Supprimer le dernier élément du cache
     procedure Supprimer_Fin (Cache : in out T_Cache) is
         A_detruire : T_Cache;
     begin
@@ -51,12 +54,14 @@ package body Cache_L is
         end if;
     end Supprimer_Fin;
 
+    -- Ajouter une route au début du cache
     procedure Ajouter_Debut (Cache : in out T_Cache; Route : in T_Route) is
         Frequence : constant Integer := 1;
     begin
         Cache := new T_Cellule'(Route, Frequence, Cache);
     end Ajouter_Debut;
 
+    -- Ajouter une route à la fin du cache
     procedure Ajouter_Fin (Cache : in out T_Cache; Route : in T_Route) is
         Frequence : constant Integer := 1;
     begin
@@ -67,6 +72,7 @@ package body Cache_L is
         end if;
     end Ajouter_Fin;
 
+    -- Augmenter la fréquence d'une route dans le cache si elle y est et renvoyer cette fréquence
     function Augmenter_Frequence (Cache : in T_Cache; Route : in T_Route) return Integer is
     begin
        if Cache /= null then
@@ -81,11 +87,12 @@ package body Cache_L is
         end if;
     end Augmenter_Frequence;
 
+    -- Ordonner la liste dans l'ordre des fréquences décroissantes
     procedure Ordonner_Liste (Cache : in out T_Cache ; Route : in T_route; Frequence : in Integer) is
     begin
         if Cache /= null and then Cache.all.Frequence <= Frequence then
             Supprimer (Cache, Route);
-            Cache := new T_Cellule'(Route, Frequence, cache);
+            Cache := new T_Cellule'(Route, Frequence, Cache);
         else 
             Ordonner_Liste (Cache.Suivant, Route, Frequence);
         end if;
