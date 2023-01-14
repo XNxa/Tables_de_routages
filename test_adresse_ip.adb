@@ -5,7 +5,6 @@ with Ada.Text_IO.Unbounded_IO; use Ada.Text_IO.Unbounded_IO;
 
 procedure Test_Adresse_IP is
 
--- Déclaration des variables
     Adresse1, Adresse2 : T_adresse_ip;
     Masque : T_adresse_ip;
     Compatible : Boolean;
@@ -47,10 +46,6 @@ procedure Test_Adresse_IP is
         Lire_Adresse(Adresse1, Fichier);
         Adresse_String := To_UString_Base10(Adresse1);
         Put_Line("Test avec une adresse IP trop longue dans le fichier : " & Adresse_String);
-
-        --Lire_Adresse(Adresse1, Fichier);
-        --Adresse_String := To_UString_Base10(Adresse1);
-        --Put_Line("Test avec une adresse IP trop courte dans le fichier : " & Adresse_String);
         
         Close(Fichier);
 
