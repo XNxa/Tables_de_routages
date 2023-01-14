@@ -171,8 +171,9 @@ package body Cache_a is
 
     procedure Afficher_Cache (Cache : in T_Cache) is
         -- procedure bis qui affiche le cache
-        -- son existence permet décrire la ligne "Cache : " et de sauter une ligne dans le même sous programme
-        -- et de ne pas l'écrire dans le corps du programme
+        -- son existence permet décrire la ligne "Cache : " une seule fois avant l'affichage
+        -- et de sauter une ligne dans le même sous programme qu'après l'affichage
+        -- sans l'écrire dans le corps du programme
         procedure Afficher_Cache_b (Cache : in T_Cache) is
         begin
             if Cache /= null then
