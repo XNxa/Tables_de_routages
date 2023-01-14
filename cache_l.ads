@@ -1,5 +1,6 @@
 with Adresse_IP; use Adresse_IP;
 with Outils; use Outils;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 package Cache_L is
 
@@ -34,7 +35,7 @@ package Cache_L is
     -- Pre-condition :
         -- politique == (+"FIFO" or +"LRU" or +"LFU")
     procedure Mettre_a_jour (Cache : in out T_Cache; Route : in T_Route ; politique : in String) with
-        pre => politique = (+"FIFO" or +"LRU" or +"LFU");
+        pre => politique = +"FIFO" or politique = +"LRU" or politique = +"LFU";
 
 
     -- procedure Enregistrer
@@ -46,7 +47,7 @@ package Cache_L is
      -- Pre-condition :
         -- politique == (+"FIFO" or +"LRU" or +"LFU")
     procedure Enregistrer (Cache : in out T_Cache; Route : in T_Route ; politique : in String) with
-        pre => politique = (+"FIFO" or +"LRU" or +"LFU");
+        pre => politique = +"FIFO" or politique = +"LRU" or politique = +"LFU";
 
     
     -- procedure Afficher_Cache

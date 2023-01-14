@@ -186,6 +186,9 @@ begin
     exception
         when Data_Error =>
             Lire_Commande (FD_Paquet, Commande);
+            Put("(Ligne : ");
+            Put(Integer(Line(FD_Paquet))-1, 1);
+            put(") Commande : ");
             case Commande is
                 when C_table =>
                     Afficher_Table_Routage (Table_Routage);
