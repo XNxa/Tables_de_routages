@@ -20,6 +20,7 @@ package body Cache_a is
         
     end Initialiser;
 
+    -- procédure récursive qui permet d'ajouter une route à l'arbre
     procedure Ajouter (Cache : in out T_Cache ; Route : in T_Route) is
         procedure Ajouter_b (Cache : in out T_Cache ; Route : in T_Route ; index : in Integer) is
         begin
@@ -51,6 +52,8 @@ package body Cache_a is
         Ajouter_b(Cache, Route, 1);
     end Ajouter;
 
+
+    -- procédure récursive qui permet de supprimer une route de l'arbre
     procedure Supprimer (Cache : in out T_Cache ; Route : in T_Route) is
         procedure Supprimer_b (Cache : in out T_Cache ; Route : in T_Route ; index : in Integer) is
             A_detruire : T_Cache;
