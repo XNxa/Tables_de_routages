@@ -51,7 +51,7 @@ package Adresse_IP is
 
 
     -- function Adapter_Masque
-    -- Permet d'obtenir un masque adapté a une adresse
+    -- Permet d'obtenir un masque adapté à une adresse
     -- Paramètre :
         -- Paquet : in T_adresse_ip
     function Adapter_Masque (Paquet : in T_adresse_ip) return T_adresse_ip;
