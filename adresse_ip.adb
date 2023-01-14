@@ -36,9 +36,6 @@ package body Adresse_IP is
         Get(Fichier, Octet4);
         Get(Fichier, Poubelle); 
         Initialiser(Adresse, Octet1, Octet2, Octet3, Octet4);
-        exception
-            when Others =>
-                Put_Line("Erreur de lecture de l'adresse IP");
     end Lire_Adresse;
 
     function To_UString_Base10 (Adresse : in T_adresse_ip) return Unbounded_String is
