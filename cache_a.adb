@@ -22,6 +22,8 @@ package body Cache_a is
 
     -- procédure récursive qui permet d'ajouter une route à l'arbre
     procedure Ajouter (Cache : in out T_Cache ; Route : in T_Route) is
+        -- procedure récursive bis qui fait l'action de la procédure initiale mais en ajoutant un index en paramètre
+        -- ainsi il est possible d'avoir un index dans le corps de cette fonction récursive
         procedure Ajouter_b (Cache : in out T_Cache ; Route : in T_Route ; index : in Integer) is
         begin
             if Valeur_Bit(Route.Adresse, index) then
