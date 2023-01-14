@@ -37,7 +37,9 @@ package body Outils is
         
         elsif Lecture = "fin" then
             Commande := C_Fin;
+
         end if;
+        
     end Lire_Commande;
 
     procedure Afficher_Route(Route : in T_route) is
