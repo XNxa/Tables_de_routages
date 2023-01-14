@@ -9,7 +9,7 @@ package Adresse_IP is
 
 
     -- procedure Initialiser
-    -- Permet d'initaliser une adresse à partir des valeur entiere de chaque octets
+    -- Permet d'initaliser une adresse dans le type T_adresse_ip à partir des valeurs entières de chaque octet
     -- Paramètres :
         -- Adresse : out T_adresse_ip
         -- Octet1 : in Integer
@@ -25,7 +25,7 @@ package Adresse_IP is
 
 
     -- procedure Lire_Adresse
-    -- Permet de lire une adresse dans un fichier et de l'initialiser
+    -- Permet de lire une adresse dans un fichier et de l'initialiser dans le type T_adresse_ip
     -- Paramètres :
         -- Adresse : out T_adresse_ip
         -- Fichier : in out File_Type
@@ -33,15 +33,15 @@ package Adresse_IP is
 
 
     -- function To_UString_Base10
-    -- Permet d'obtenir une Unbounded_String correspondant à une adresse
+    -- Permet d'obtenir une Unbounded_String correspondant à une adresse ip
     -- Paramètre :
         -- Adresse : in T_adresse_ip
     function To_UString_Base10 (Adresse : in T_adresse_ip) return Unbounded_String;
 
 
     -- function Est_Compatible
-    -- Permet de comparer si une adresse avec un masque est compatible avec une destination
-    -- Renvoie True si compatible False Sinon
+    -- Permet de comparer si une adresse à laquelle on applique un masque est compatible avec une destination
+    -- Renvoie True si c'est compatible et False Sinon
     -- Paramètres :
         -- Adresse : in T_adresse_ip
         -- Masque : in T_adresse_ip
@@ -57,7 +57,7 @@ package Adresse_IP is
     function Adapter_Masque (Paquet : in T_adresse_ip) return T_adresse_ip;
 
     -- function Valeur_Bit
-    -- Obtenir le n-ieme bit d'une adresse
+    -- Obtenir le n-ieme bit d'une adresse ip
     -- Paramètres :
         -- Adresse : in T_adresse_ip
         -- N : in Integer
